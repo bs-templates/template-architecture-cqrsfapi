@@ -43,7 +43,7 @@ namespace BAYSOFT.Core.Middleware
             services.AddTransient<IPatchSampleService, PatchSampleService>();
             services.AddTransient<IDeleteSampleService, DeleteSampleService>();
 
-            var assembly = AppDomain.CurrentDomain.Load("BAYSOFT");
+            var assembly = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
 
             services.AddMediatR(assembly);
 
