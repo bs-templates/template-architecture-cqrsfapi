@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BAYSOFT.Core.Domain.Entities\BAYSOFT.Core.Domain.Entities.csproj" />
+    <ProjectReference Include="..\BAYSOFT.Core.Domain.Services\BAYSOFT.Core.Domain.Services.csproj" />
     <ProjectReference Include="..\BAYSOFT.Core.Domain\BAYSOFT.Core.Domain.csproj" />
   </ItemGroup>
 
