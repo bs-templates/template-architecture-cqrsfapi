@@ -10,13 +10,13 @@ namespace BAYSOFT.Presentations.WebAPI.Migrations
                 name: "Samples",
                 columns: table => new
                 {
-                    SampleID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Samples", x => x.SampleID);
+                    table.PrimaryKey("PK_Samples", x => x.Id);
                 });
         }
 

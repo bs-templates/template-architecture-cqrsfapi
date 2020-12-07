@@ -18,10 +18,10 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
         }
         public async Task<GetSampleByIDQueryResponse> Handle(GetSampleByIDQuery request, CancellationToken cancellationToken)
         {
-            var id = request.Project(x => x.SampleID);
+            var id = request.Project(x => x.Id);
 
             var data = await Context.Samples
-                .Where(x => x.SampleID == id)
+                .Where(x => x.Id == id)
                 .Select(request)
                 .AsNoTracking()
                 .SingleOrDefaultAsync();

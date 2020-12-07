@@ -6,7 +6,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
     {
         public GetSampleByIDQuery()
         {
-            ConfigKeys(x => x.SampleID);
+            ConfigKeys(x => x.Id);
             
             // Configures supressed properties & response properties
             //ConfigSuppressedProperties(x => x);

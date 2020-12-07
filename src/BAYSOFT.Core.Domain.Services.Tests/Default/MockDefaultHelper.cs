@@ -35,8 +35,8 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default
         private static IQueryable<Sample> GetSchoolsCollection()
         {
             return new List<Sample> {
-                new Sample { SampleID = 1, Description = "Description 001" },
-                new Sample { SampleID = 2, Description = "Description 002" },
+                new Sample { Id = 1, Description = "Description 001" },
+                new Sample { Id = 2, Description = "Description 002" },
             }.AsQueryable();
         }
         

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BAYSOFT.Core.Domain.Entities.Default
+﻿namespace BAYSOFT.Core.Domain.Entities.Default
 {
-    public class Sample : DomainEntity
+    public class Sample : DomainEntity<int>
     {
-        public int SampleID { get; set; }
         public string Description { get; set; }
         public Sample()
         {
