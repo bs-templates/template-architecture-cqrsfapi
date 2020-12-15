@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BAYSOFT.Core.Infrastructures.Services
+namespace BAYSOFT.Infrastructures.Services
 {
     public class EmailService : IEmailService
     {

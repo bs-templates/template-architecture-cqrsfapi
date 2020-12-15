@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BAYSOFT.Core.Application\BAYSOFT.Core.Application.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Middleware\BAYSOFT.Core.Middleware.csproj" />
+    <ProjectReference Include="..\BAYSOFT.Middleware\BAYSOFT.Middleware.csproj" />
   </ItemGroup>
 
 

@@ -23,8 +23,8 @@
     <ProjectReference Include="..\BAYSOFT.Core.Domain.Services\BAYSOFT.Core.Domain.Services.csproj" />
     <ProjectReference Include="..\BAYSOFT.Core.Domain.Validations\BAYSOFT.Core.Domain.Validations.csproj" />
     <ProjectReference Include="..\BAYSOFT.Core.Domain\BAYSOFT.Core.Domain.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Infrastructures.Data\BAYSOFT.Core.Infrastructures.Data.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Infrastructures.Services\BAYSOFT.Core.Infrastructures.Services.csproj" />
+    <ProjectReference Include="..\BAYSOFT.Infrastructures.Data\BAYSOFT.Infrastructures.Data.csproj" />
+    <ProjectReference Include="..\BAYSOFT.Infrastructures.Services\BAYSOFT.Infrastructures.Services.csproj" />
   </ItemGroup>
 
 </Project>

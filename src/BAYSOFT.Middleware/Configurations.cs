@@ -4,7 +4,7 @@ using BAYSOFT.Core.Domain.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.EntityValidations.Default;
 using BAYSOFT.Core.Domain.Validations.Specifications.Default.Samples;
-using BAYSOFT.Core.Infrastructures.Data.Contexts;
+using BAYSOFT.Infrastructures.Data.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ using ModelWrapper.Middleware;
 using System;
 using System.Reflection;
 
-namespace BAYSOFT.Core.Middleware
+namespace BAYSOFT.Middleware
 {
     public static class Configurations
     {
