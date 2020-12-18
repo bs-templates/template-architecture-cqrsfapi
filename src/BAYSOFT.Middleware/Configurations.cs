@@ -7,11 +7,17 @@ using BAYSOFT.Core.Domain.Validations.Specifications.Default.Samples;
 using BAYSOFT.Infrastructures.Data.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using ModelWrapper.Middleware;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 
 namespace BAYSOFT.Middleware
@@ -20,6 +26,8 @@ namespace BAYSOFT.Middleware
     {
         public static IServiceCollection AddMiddleware(this IServiceCollection services, IConfiguration configuration, Assembly presentationAssembly)
         {
+            services.AddLocalization();
+
             services.AddDbContext<IDefaultDbContext, DefaultDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
@@ -60,6 +68,15 @@ namespace BAYSOFT.Middleware
 
         public static IApplicationBuilder UseMiddleware(this IApplicationBuilder app)
         {
+            var supportedCultures = new string[] { "en-US", "pt-BR" };
+
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+            
+            app.UseRequestLocalization(localizationOptions);
+
             //app.UseAuthentication();
             //app.UseAuthorization();
             // YOUR CODE GOES HERE

@@ -1,7 +1,9 @@
 using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
+using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,12 +12,18 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
 {
     public class DeleteSampleCommandHandler : ApplicationRequestHandler<Sample, DeleteSampleCommand, DeleteSampleCommandResponse>
     {
+        private IStringLocalizer MessagesLocalizer { get; set; }
+        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
         public IDefaultDbContext Context { get; set; }
         private IDeleteSampleService DeleteService { get; set; }
         public DeleteSampleCommandHandler(
+            IStringLocalizer<Messages> messagesLocalizer,
+            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
             IDefaultDbContext context,
             IDeleteSampleService deleteService)
         {
+            MessagesLocalizer = messagesLocalizer;
+            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
             Context = context;
             DeleteService = deleteService;
         }
@@ -26,13 +34,15 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
             var data = await Context.Samples.SingleOrDefaultAsync(x => x.Id == id);
 
             if (data == null)
-                throw new Exception("Sample not found!");
+            {
+                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
+            }
 
             await DeleteService.Run(data);
 
             await Context.SaveChangesAsync();
 
-            return new DeleteSampleCommandResponse(request, data, "Successful operation!", 1);
+            return new DeleteSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }
     }
 }

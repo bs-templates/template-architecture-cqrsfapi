@@ -37,6 +37,8 @@ namespace BAYSOFT.Presentations.WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware();
+
             app.UseRouting();
 
             app.UseAuthorization();

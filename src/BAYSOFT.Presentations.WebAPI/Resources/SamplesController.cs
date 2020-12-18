@@ -19,7 +19,7 @@ namespace BAYSOFT.Resources
             return await Mediator.Send(request, cancellationToken);
         }
 
-        [HttpGet("{sampleid}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<GetSampleByIDQueryResponse>> Get(GetSampleByIDQuery request, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Mediator.Send(request, cancellationToken);
@@ -31,19 +31,19 @@ namespace BAYSOFT.Resources
             return await Mediator.Send(request, cancellationToken);
         }
 
-        [HttpPut("{sampleid}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<PutSampleCommandResponse>> Put(PutSampleCommand request, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Mediator.Send(request, cancellationToken);
         }
 
-        [HttpPatch("{sampleid}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult<PatchSampleCommandResponse>> Patch(PatchSampleCommand request, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Mediator.Send(request, cancellationToken);
         }
 
-        [HttpDelete("{sampleid}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<DeleteSampleCommandResponse>> Delete(DeleteSampleCommand request, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Mediator.Send(request, cancellationToken);

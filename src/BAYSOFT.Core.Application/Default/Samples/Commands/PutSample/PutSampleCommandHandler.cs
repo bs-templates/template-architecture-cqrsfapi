@@ -1,7 +1,9 @@
 using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
+using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using ModelWrapper.Extensions.Put;
 using System;
 using System.Threading;
@@ -11,12 +13,18 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 {
     public class PutSampleCommandHandler : ApplicationRequestHandler<Sample, PutSampleCommand, PutSampleCommandResponse>
     {
+        private IStringLocalizer MessagesLocalizer { get; set; }
+        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
         public IDefaultDbContext Context { get; set; }
         private IPutSampleService PutService { get; set; }
         public PutSampleCommandHandler(
+            IStringLocalizer<Messages> messagesLocalizer,
+            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
             IDefaultDbContext context,
             IPutSampleService putService)
         {
+            MessagesLocalizer = messagesLocalizer;
+            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
             Context = context;
             PutService = putService;
         }
@@ -27,7 +35,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 
             if (data == null)
             {
-                throw new Exception("Sample not found!");
+                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
             }
 
             request.Put(data);
@@ -36,7 +44,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 
             await Context.SaveChangesAsync();
 
-            return new PutSampleCommandResponse(request, data, "Successful operation!", 1);
+            return new PutSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }
     }
 }
