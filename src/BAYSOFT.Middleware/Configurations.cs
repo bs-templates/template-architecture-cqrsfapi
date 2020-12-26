@@ -1,23 +1,10 @@
-﻿using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
-using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
-using BAYSOFT.Core.Domain.Services.Default.Samples;
-using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
-using BAYSOFT.Core.Domain.Validations.EntityValidations.Default;
-using BAYSOFT.Core.Domain.Validations.Specifications.Default.Samples;
-using BAYSOFT.Infrastructures.Data.Contexts;
+﻿using BAYSOFT.Middleware.AddServices;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Localization.Routing;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using ModelWrapper.Middleware;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
 
 namespace BAYSOFT.Middleware
@@ -28,28 +15,11 @@ namespace BAYSOFT.Middleware
         {
             services.AddLocalization();
 
-            services.AddDbContext<IDefaultDbContext, DefaultDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    sql => sql.MigrationsAssembly(presentationAssembly.GetName().Name)));
-            
-            services.AddDbContext<IDefaultDbContextQuery, DefaultDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    sql => sql.MigrationsAssembly(presentationAssembly.GetName().Name)));
-
-            services.AddTransient<SampleValidator>();
-            services.AddTransient<SampleDescriptionAlreadyExistsSpecification>();
-
-            services.AddTransient<PutSampleSpecificationsValidator>();
-            services.AddTransient<PostSampleSpecificationsValidator>();
-            services.AddTransient<PatchSampleSpecificationsValidator>();
-            services.AddTransient<DeleteSampleSpecificationsValidator>();
-
-            services.AddTransient<IPutSampleService, PutSampleService>();
-            services.AddTransient<IPostSampleService, PostSampleService>();
-            services.AddTransient<IPatchSampleService, PatchSampleService>();
-            services.AddTransient<IDeleteSampleService, DeleteSampleService>();
+            services.AddDbContexts(configuration, presentationAssembly);
+            services.AddSpecifications();
+            services.AddEntityValidations();
+            services.AddDomainValidations();
+            services.AddDomainServices();
 
             var assembly = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
 

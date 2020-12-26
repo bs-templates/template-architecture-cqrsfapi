@@ -12,7 +12,9 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
     {
         private DeleteSampleService GetMockedDeleteSampleService()
         {
-            var mockedDefaultDbContext = MockDefaultHelper.GetMockedDefaultDbContext();
+            var mockedDefaultDbContext = MockDefaultHelper
+                .GetMockedDbContext()
+                .AddMockedSamples();
 
             var mockedSampleValidator = new SampleValidator();
 
