@@ -1,5 +1,5 @@
-﻿using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Exceptions;
+﻿using BAYSOFT.Abstractions.Core.Domain.Exceptions;
+using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Core.Domain.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.EntityValidations.Default;

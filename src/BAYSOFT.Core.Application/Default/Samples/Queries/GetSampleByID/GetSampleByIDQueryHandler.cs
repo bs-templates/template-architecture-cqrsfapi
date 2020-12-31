@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
 using BAYSOFT.Core.Domain.Resources;
 using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Abstractions.Core.Application;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
 {
-    public class GetSampleByIDQueryHandler : IRequestHandler<GetSampleByIDQuery, GetSampleByIDQueryResponse>
+    public class GetSampleByIDQueryHandler : ApplicationRequestHandler<Sample, GetSampleByIDQuery, GetSampleByIDQueryResponse>
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
@@ -26,7 +27,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
             Context = context;
         }
-        public async Task<GetSampleByIDQueryResponse> Handle(GetSampleByIDQuery request, CancellationToken cancellationToken)
+        public override async Task<GetSampleByIDQueryResponse> Handle(GetSampleByIDQuery request, CancellationToken cancellationToken)
         {
             var id = request.Project(x => x.Id);
 

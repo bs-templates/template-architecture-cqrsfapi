@@ -1,4 +1,6 @@
-﻿namespace BAYSOFT.Core.Domain.Entities.Default
+﻿using BAYSOFT.Abstractions.Core.Domain.Entities;
+
+namespace BAYSOFT.Core.Domain.Entities.Default
 {
     public class Sample : DomainEntity<int>
     {

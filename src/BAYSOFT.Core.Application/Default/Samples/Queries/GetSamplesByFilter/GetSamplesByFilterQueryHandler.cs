@@ -6,10 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.Extensions.Localization;
+using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Abstractions.Core.Application;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSamplesByFilter
 {
-    public class GetSamplesByFilterQueryHandler : IRequestHandler<GetSamplesByFilterQuery, GetSamplesByFilterQueryResponse>
+    public class GetSamplesByFilterQueryHandler : ApplicationRequestHandler<Sample, GetSamplesByFilterQuery, GetSamplesByFilterQueryResponse>
     {
         private IStringLocalizer StringLocalizer { get; set; }
         private IDefaultDbContext Context { get; set; }
@@ -20,7 +22,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSamplesByFilter
             StringLocalizer = stringLocalizer;
             Context = context;
         }
-        public async Task<GetSamplesByFilterQueryResponse> Handle(GetSamplesByFilterQuery request, CancellationToken cancellationToken)
+        public override async Task<GetSamplesByFilterQueryResponse> Handle(GetSamplesByFilterQuery request, CancellationToken cancellationToken)
         {
             long resultCount = 0;
             

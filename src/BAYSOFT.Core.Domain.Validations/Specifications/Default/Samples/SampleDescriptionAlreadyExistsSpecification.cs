@@ -1,13 +1,13 @@
-﻿using BAYSOFT.Core.Domain.Entities.Default;
+﻿using BAYSOFT.Abstractions.Core.Domain.Validations;
+using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
-using NetDevPack.Specification;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace BAYSOFT.Core.Domain.Validations.Specifications.Default.Samples
 {
-    public class SampleDescriptionAlreadyExistsSpecification : Specification<Sample>
+    public class SampleDescriptionAlreadyExistsSpecification : DomainSpecification<Sample>
     {
         private IDefaultDbContextQuery Context { get; set; }
         public SampleDescriptionAlreadyExistsSpecification(IDefaultDbContextQuery context)

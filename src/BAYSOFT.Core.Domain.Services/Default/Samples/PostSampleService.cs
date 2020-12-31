@@ -1,4 +1,5 @@
-﻿using BAYSOFT.Core.Domain.Entities.Default;
+﻿using BAYSOFT.Abstractions.Core.Domain.Services;
+using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
