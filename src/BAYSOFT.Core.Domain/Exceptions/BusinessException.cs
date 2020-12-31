@@ -1,38 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace BAYSOFT.Core.Domain.Exceptions
 {
     public class BusinessException : Exception
     {
-        public List<Exception> InnerExceptions { get; set; }
+        public List<EntityException> EntityExceptions { get; set; }
+        public List<DomainException> DomainExceptions { get; set; }
         public BusinessException()
         {
-            InnerExceptions = new List<Exception>();
+            EntityExceptions = new List<EntityException>();
+            DomainExceptions = new List<DomainException>();
         }
 
         public BusinessException(string message) : base(message)
         {
-            InnerExceptions = new List<Exception>();
+            EntityExceptions = new List<EntityException>();
+            DomainExceptions = new List<DomainException>();
         }
 
         public BusinessException(string message, Exception innerException) : base(message, innerException)
         {
-            InnerExceptions = new List<Exception>();
-            InnerExceptions.Add(innerException);
+            EntityExceptions = new List<EntityException>();
+            DomainExceptions = new List<DomainException>();
         }
 
-        public BusinessException(string message, List<Exception> innerExceptions) : base(message, innerExceptions.FirstOrDefault())
+        public BusinessException(string message, List<EntityException> entityExceptions, List<DomainException> domainExceptions) : base(message)
         {
-            InnerExceptions = new List<Exception>();
-            InnerExceptions.AddRange(innerExceptions);
+            EntityExceptions = new List<EntityException>();
+            DomainExceptions = new List<DomainException>();
+
+            if (entityExceptions != null && entityExceptions.Count > 0)
+            {
+                EntityExceptions.AddRange(entityExceptions);
+            }
+
+            if (domainExceptions != null && domainExceptions.Count > 0)
+            {
+                DomainExceptions.AddRange(domainExceptions);
+            }
         }
 
         protected BusinessException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            InnerExceptions = new List<Exception>();
+            EntityExceptions = new List<EntityException>();
+            DomainExceptions = new List<DomainException>();
         }
     }
 }
