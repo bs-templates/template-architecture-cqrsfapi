@@ -19,9 +19,9 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
 
         private static Mock<DbSet<Sample>> GetMockedDbSetSamples()
         {
-            var samplesCollection = GetSamplesCollection();
+            var collection = GetSamplesCollection();
 
-            var mockedDbSetSamples = samplesCollection.MockDbSet();
+            var mockedDbSetSamples = collection.MockDbSet();
 
             return mockedDbSetSamples;
         }

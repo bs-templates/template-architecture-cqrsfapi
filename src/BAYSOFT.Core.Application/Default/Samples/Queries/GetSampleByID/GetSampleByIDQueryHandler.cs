@@ -11,14 +11,14 @@ using BAYSOFT.Core.Domain.Resources;
 using BAYSOFT.Core.Domain.Entities.Default;
 using BAYSOFT.Abstractions.Core.Application;
 
-namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
+namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById
 {
-    public class GetSampleByIDQueryHandler : ApplicationRequestHandler<Sample, GetSampleByIDQuery, GetSampleByIDQueryResponse>
+    public class GetSampleByIdQueryHandler : ApplicationRequestHandler<Sample, GetSampleByIdQuery, GetSampleByIdQueryResponse>
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
         private IDefaultDbContext Context { get; set; }
-        public GetSampleByIDQueryHandler(
+        public GetSampleByIdQueryHandler(
             IStringLocalizer<Messages> messagesLocalizer,
             IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
             IDefaultDbContext context)
@@ -27,7 +27,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
             Context = context;
         }
-        public override async Task<GetSampleByIDQueryResponse> Handle(GetSampleByIDQuery request, CancellationToken cancellationToken)
+        public override async Task<GetSampleByIdQueryResponse> Handle(GetSampleByIdQuery request, CancellationToken cancellationToken)
         {
             var id = request.Project(x => x.Id);
 
@@ -42,7 +42,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID
                 throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
             }
 
-            return new GetSampleByIDQueryResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
+            return new GetSampleByIdQueryResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }
     }
 }
