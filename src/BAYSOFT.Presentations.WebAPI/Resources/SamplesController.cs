@@ -2,7 +2,7 @@
 using BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample;
 using BAYSOFT.Core.Application.Default.Samples.Commands.PostSample;
 using BAYSOFT.Core.Application.Default.Samples.Commands.PutSample;
-using BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleByID;
+using BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById;
 using BAYSOFT.Core.Application.Default.Samples.Queries.GetSamplesByFilter;
 using BAYSOFT.Presentations.WebAPI.Abstractions.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace BAYSOFT.Resources
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetSampleByIDQueryResponse>> Get(GetSampleByIDQuery request, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ActionResult<GetSampleByIdQueryResponse>> Get(GetSampleByIdQuery request, CancellationToken cancellationToken = default(CancellationToken))
         {
             return await Mediator.Send(request, cancellationToken);
         }
