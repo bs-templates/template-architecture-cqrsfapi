@@ -1,21 +1,22 @@
-﻿using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+﻿using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using Moq;
 
 namespace BAYSOFT.Core.Domain.Services.Tests.Default
 {
     public static class MockDefaultHelper
     {
-        internal static Mock<IDefaultDbContext> GetMockedDbContext()
+        internal static Mock<IDefaultDbContextWriter> GetMockedDefaultDbContextWriter()
         {
-            var mockedDbContext = new Mock<IDefaultDbContext>();
+            var mockedSampleWriter = new Mock<IDefaultDbContextWriter>();
 
-            return mockedDbContext;
+            return mockedSampleWriter;
         }
-        internal static Mock<IDefaultDbContextQuery> GetMockedDbContextQuery()
+        internal static Mock<IDefaultDbContextReader> GetMockedDefaultDbContextReader()
         {
-            var mockedDbContextQuery = new Mock<IDefaultDbContextQuery>();
+            var mockedSampleReader = new Mock<IDefaultDbContextReader>();
 
-            return mockedDbContextQuery;
+            return mockedSampleReader;
         }
     }
 }

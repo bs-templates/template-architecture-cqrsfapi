@@ -1,6 +1,6 @@
 using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -16,23 +16,23 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
-        public IDefaultDbContext Context { get; set; }
+        public IDefaultDbContextWriter Writer { get; set; }
         private IPutSampleService PutService { get; set; }
         public PutSampleCommandHandler(
             IStringLocalizer<Messages> messagesLocalizer,
             IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
-            IDefaultDbContext context,
+            IDefaultDbContextWriter writer,
             IPutSampleService putService)
         {
             MessagesLocalizer = messagesLocalizer;
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
-            Context = context;
+            Writer = writer;
             PutService = putService;
         }
         public override async Task<PutSampleCommandResponse> Handle(PutSampleCommand request, CancellationToken cancellationToken)
         {
             var id = request.Project(x => x.Id);
-            var data = await Context.Samples.SingleOrDefaultAsync(x => x.Id == id);
+            var data = await Writer.Query<Sample>().SingleOrDefaultAsync(x => x.Id == id);
 
             if (data == null)
             {
@@ -43,7 +43,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 
             await PutService.Run(data);
 
-            await Context.SaveChangesAsync();
+            await Writer.CommitAsync(cancellationToken);
 
             return new PutSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }

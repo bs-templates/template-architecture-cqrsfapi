@@ -12,8 +12,8 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
     {
         private DeleteSampleService GetMockedDeleteSampleService()
         {
-            var mockedDefaultDbContext = MockDefaultHelper
-                .GetMockedDbContext()
+            var mockedWriter = MockDefaultHelper
+                .GetMockedDefaultDbContextWriter()
                 .AddMockedSamples();
 
             var mockedSampleValidator = new SampleValidator();
@@ -21,7 +21,7 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
             var mockedDeleteSampleSpecificationsValidator = new DeleteSampleSpecificationsValidator();
 
             var mockedDeleteSampleService = new DeleteSampleService(
-                mockedDefaultDbContext.Object,
+                mockedWriter.Object,
                 mockedSampleValidator,
                 mockedDeleteSampleSpecificationsValidator
                 );

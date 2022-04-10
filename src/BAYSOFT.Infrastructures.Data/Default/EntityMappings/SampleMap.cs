@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using BAYSOFT.Core.Domain.Entities.Default;
 
-namespace BAYSOFT.Infrastructures.Data.EntityMappings.Default
+namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
 {
     public class SampleMap : IEntityTypeConfiguration<Sample>
     {

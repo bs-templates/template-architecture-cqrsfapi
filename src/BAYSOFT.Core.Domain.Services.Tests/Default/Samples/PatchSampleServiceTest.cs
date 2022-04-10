@@ -14,24 +14,24 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
     {
         private PatchSampleService GetMockedPatchSampleService()
         {
-            var mockedDefaultDbContext = MockDefaultHelper
-                .GetMockedDbContext()
+            var mockedWriter = MockDefaultHelper
+                .GetMockedDefaultDbContextWriter()
                 .AddMockedSamples();
 
-            var mockedDefaultDbContextQuery = MockDefaultHelper
-                .GetMockedDbContextQuery()
+            var mockedReader = MockDefaultHelper
+                .GetMockedDefaultDbContextReader()
                 .AddMockedSamples();
 
             var mockedSampleValidator = new SampleValidator();
 
             var sampleDescriptionAlreadyExistsSpecification = new SampleDescriptionAlreadyExistsSpecification(
-                mockedDefaultDbContextQuery.Object);
+                mockedReader.Object);
 
             var mockedPatchSampleSpecificationsValidator = new PatchSampleSpecificationsValidator(
                 sampleDescriptionAlreadyExistsSpecification);
 
             var mockedPatchSampleService = new PatchSampleService(
-                mockedDefaultDbContext.Object,
+                mockedWriter.Object,
                 mockedSampleValidator,
                 mockedPatchSampleSpecificationsValidator
                 );

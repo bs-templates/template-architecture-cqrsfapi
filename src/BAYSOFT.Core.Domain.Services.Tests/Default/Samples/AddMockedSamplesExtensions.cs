@@ -1,5 +1,5 @@
 ﻿using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
@@ -26,26 +26,26 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
             return mockedDbSetSamples;
         }
 
-        internal static Mock<IDefaultDbContext> AddMockedSamples(this Mock<IDefaultDbContext> mockedDbContext)
+        internal static Mock<IDefaultDbContextWriter> AddMockedSamples(this Mock<IDefaultDbContextWriter> mockedSampleWriter)
         {
             var mockedDbSetSamples = GetMockedDbSetSamples();
 
-            mockedDbContext
-                .Setup(setup => setup.Samples)
+            mockedSampleWriter
+                .Setup(setup => setup.Query<Sample>())
                 .Returns(mockedDbSetSamples.Object);
 
-            return mockedDbContext;
+            return mockedSampleWriter;
         }
 
-        internal static Mock<IDefaultDbContextQuery> AddMockedSamples(this Mock<IDefaultDbContextQuery> mockedDbContextQuery)
+        internal static Mock<IDefaultDbContextReader> AddMockedSamples(this Mock<IDefaultDbContextReader> mockedSampleReader)
         {
             var mockedDbSetSamples = GetMockedDbSetSamples();
 
-            mockedDbContextQuery
-                .Setup(setup => setup.Samples)
+            mockedSampleReader
+                .Setup(setup => setup.Query<Sample>())
                 .Returns(mockedDbSetSamples.Object);
 
-            return mockedDbContextQuery;
+            return mockedSampleReader;
         }
     }
 }

@@ -1,6 +1,6 @@
 using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
@@ -16,24 +16,24 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
-        public IDefaultDbContext Context { get; set; }
+        public IDefaultDbContextWriter Writer { get; set; }
         private IPatchSampleService PatchService { get; set; }
         public PatchSampleCommandHandler(
             IStringLocalizer<Messages> messagesLocalizer,
             IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
-            IDefaultDbContext context,
+            IDefaultDbContextWriter writer,
             IPatchSampleService patchService)
         {
             MessagesLocalizer = messagesLocalizer;
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
-            Context = context;
+            Writer = writer;
             PatchService = patchService;
         }
         public override async Task<PatchSampleCommandResponse> Handle(PatchSampleCommand request, CancellationToken cancellationToken)
         {
             var id = request.Project(x => x.Id);
 
-            var data = await Context.Samples.SingleOrDefaultAsync(x => x.Id == id);
+            var data = await Writer.Query<Sample>().SingleOrDefaultAsync(x => x.Id == id);
 
             if (data == null)
             {
@@ -44,7 +44,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
 
             await PatchService.Run(data);
 
-            await Context.SaveChangesAsync();
+            await Writer.CommitAsync(cancellationToken);
 
             return new PatchSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }

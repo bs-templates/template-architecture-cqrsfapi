@@ -1,6 +1,6 @@
 using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.Extensions.Localization;
@@ -13,16 +13,16 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PostSample
     public class PostSampleCommandHandler : ApplicationRequestHandler<Sample, PostSampleCommand, PostSampleCommandResponse>
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
-        private IDefaultDbContext Context { get; set; }
         private IPostSampleService PostService { get; set; }
+        private IDefaultDbContextWriter Writer { get; set; }
         public PostSampleCommandHandler(
             IStringLocalizer<Messages> messagesLocalizer,
-            IDefaultDbContext context,
+            IDefaultDbContextWriter writer,
             IPostSampleService postService
         )
         {
             MessagesLocalizer = messagesLocalizer;
-            Context = context;
+            Writer = writer;
             PostService = postService;
         }
         public override async Task<PostSampleCommandResponse> Handle(PostSampleCommand request, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PostSample
 
             await PostService.Run(data);
 
-            await Context.SaveChangesAsync();
+            await Writer.CommitAsync(cancellationToken);
 
             return new PostSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
         }

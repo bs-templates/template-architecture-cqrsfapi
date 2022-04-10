@@ -1,6 +1,6 @@
 ﻿using BAYSOFT.Abstractions.Core.Domain.Validations;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,15 +9,15 @@ namespace BAYSOFT.Core.Domain.Validations.Specifications.Default.Samples
 {
     public class SampleDescriptionAlreadyExistsSpecification : DomainSpecification<Sample>
     {
-        private IDefaultDbContextQuery Context { get; set; }
-        public SampleDescriptionAlreadyExistsSpecification(IDefaultDbContextQuery context)
+        private IDefaultDbContextReader Reader { get; set; }
+        public SampleDescriptionAlreadyExistsSpecification(IDefaultDbContextReader reader)
         {
-            Context = context;
+            Reader = reader;
         }
 
         public override Expression<Func<Sample, bool>> ToExpression()
         {
-            return sample => Context.Samples.Any(x => x.Description == sample.Description && x.Id != sample.Id);
+            return sample => Reader.Query<Sample>().Any(x => x.Description == sample.Description && x.Id != sample.Id);
         }
     }
 }

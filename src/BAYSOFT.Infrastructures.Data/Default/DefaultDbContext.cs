@@ -1,11 +1,10 @@
 ﻿using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Infrastructures.Data.Default.EntityMappings;
 using Microsoft.EntityFrameworkCore;
-using BAYSOFT.Infrastructures.Data.EntityMappings.Default;
 
 namespace BAYSOFT.Infrastructures.Data.Contexts
 {
-    public class DefaultDbContext : DbContext, IDefaultDbContext
+    public class DefaultDbContext : DbContext
     {
         public DbSet<Sample> Samples { get; set; }
 

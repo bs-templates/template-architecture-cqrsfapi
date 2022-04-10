@@ -1,6 +1,6 @@
 ﻿using BAYSOFT.Abstractions.Core.Domain.Services;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.EntityValidations.Default;
@@ -10,14 +10,14 @@ namespace BAYSOFT.Core.Domain.Services.Default.Samples
 {
     public class PostSampleService : DomainService<Sample>, IPostSampleService
     {
-        private IDefaultDbContext Context { get; set; }
+        private IDefaultDbContextWriter Writer { get; set; }
         public PostSampleService(
-            IDefaultDbContext context,
+            IDefaultDbContextWriter writer,
             SampleValidator entityValidator,
             PostSampleSpecificationsValidator domainValidator
         ) : base(entityValidator, domainValidator)
         {
-            Context = context;
+            Writer = writer;
         }
         public override async Task Run(Sample entity)
         {
@@ -25,7 +25,7 @@ namespace BAYSOFT.Core.Domain.Services.Default.Samples
 
             ValidateDomain(entity);
 
-            await Context.Samples.AddAsync(entity);
+            await Writer.AddAsync(entity);
         }
     }
 }

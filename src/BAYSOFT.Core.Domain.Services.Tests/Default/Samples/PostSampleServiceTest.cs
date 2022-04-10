@@ -14,24 +14,24 @@ namespace BAYSOFT.Core.Domain.Services.Tests.Default.Samples
     {
         private PostSampleService GetMockedPostSampleService()
         {
-            var mockedDefaultDbContext = MockDefaultHelper
-                .GetMockedDbContext()
+            var mockedWriter = MockDefaultHelper
+                .GetMockedDefaultDbContextWriter()
                 .AddMockedSamples();
 
-            var mockedDefaultDbContextQuery = MockDefaultHelper
-                .GetMockedDbContextQuery()
+            var mockedReader = MockDefaultHelper
+                .GetMockedDefaultDbContextReader()
                 .AddMockedSamples();
 
             var mockedSampleValidator = new SampleValidator();
 
             var mockedSampleNameAlreadyExistsSpecification = new SampleDescriptionAlreadyExistsSpecification(
-                mockedDefaultDbContextQuery.Object);
+                mockedReader.Object);
 
             var mockedPostSampleSpecificationsValidator = new PostSampleSpecificationsValidator(
                 mockedSampleNameAlreadyExistsSpecification);
 
             var mockedPostSampleService = new PostSampleService(
-                mockedDefaultDbContext.Object,
+                mockedWriter.Object,
                 mockedSampleValidator,
                 mockedPostSampleSpecificationsValidator);
 

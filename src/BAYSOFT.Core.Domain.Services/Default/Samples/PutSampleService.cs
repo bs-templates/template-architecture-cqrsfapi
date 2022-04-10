@@ -1,6 +1,6 @@
 ﻿using BAYSOFT.Abstractions.Core.Domain.Services;
 using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.DomainValidations.Default.Samples;
 using BAYSOFT.Core.Domain.Validations.EntityValidations.Default;
@@ -10,14 +10,14 @@ namespace BAYSOFT.Core.Domain.Services.Default.Samples
 {
     public class PutSampleService : DomainService<Sample>, IPutSampleService
     {
-        private IDefaultDbContext Context { get; set; }
+        private IDefaultDbContextWriter Writer { get; set; }
         public PutSampleService(
-            IDefaultDbContext context,
+            IDefaultDbContextWriter writer,
             SampleValidator entityValidator,
             PutSampleSpecificationsValidator domainValidator
         ) : base(entityValidator, domainValidator)
         {
-            Context = context;
+            Writer = writer;
         }
 
         public override Task Run(Sample entity)

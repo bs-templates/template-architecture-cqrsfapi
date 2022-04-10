@@ -1,5 +1,7 @@
-﻿using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
+﻿using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
 using BAYSOFT.Infrastructures.Data.Contexts;
+using BAYSOFT.Infrastructures.Data.Default;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,12 +13,15 @@ namespace BAYSOFT.Middleware.AddServices
     {
         public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration, Assembly presentationAssembly)
         {
-            services.AddDbContext<IDefaultDbContext, DefaultDbContext>(options =>
+            services.AddTransient<IDefaultDbContextWriter, DefaultDbContextWriter>();
+            services.AddTransient<IDefaultDbContextReader, DefaultDbContextReader>();
+
+            services.AddDbContext<DefaultDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     sql => sql.MigrationsAssembly(presentationAssembly.GetName().Name)));
 
-            services.AddDbContext<IDefaultDbContextQuery, DefaultDbContext>(options =>
+            services.AddDbContext<DefaultDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
                     sql => sql.MigrationsAssembly(presentationAssembly.GetName().Name)));

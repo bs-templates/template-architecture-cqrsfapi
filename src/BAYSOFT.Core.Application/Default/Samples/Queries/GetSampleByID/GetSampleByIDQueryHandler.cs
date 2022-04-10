@@ -1,15 +1,14 @@
-using MediatR;
+using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
+using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using ModelWrapper.Extensions.Select;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Localization;
-using BAYSOFT.Core.Domain.Resources;
-using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Abstractions.Core.Application;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById
 {
@@ -17,24 +16,23 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
-        private IDefaultDbContext Context { get; set; }
+        private IDefaultDbContextReader Reader { get; set; }
         public GetSampleByIdQueryHandler(
             IStringLocalizer<Messages> messagesLocalizer,
             IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
-            IDefaultDbContext context)
+            IDefaultDbContextReader reader)
         {
             MessagesLocalizer = messagesLocalizer;
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
-            Context = context;
+            Reader = reader;
         }
         public override async Task<GetSampleByIdQueryResponse> Handle(GetSampleByIdQuery request, CancellationToken cancellationToken)
         {
             var id = request.Project(x => x.Id);
 
-            var data = await Context.Samples
+            var data = await Reader.Query<Sample>()
                 .Where(x => x.Id == id)
                 .Select(request)
-                .AsNoTracking()
                 .SingleOrDefaultAsync();
 
             if (data == null)

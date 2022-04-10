@@ -1,34 +1,32 @@
-using MediatR;
+using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
+using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using ModelWrapper.Extensions.FullSearch;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Contexts;
 using System.Threading;
 using System.Threading.Tasks;
-using BAYSOFT.Core.Domain.Resources;
-using Microsoft.Extensions.Localization;
-using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Abstractions.Core.Application;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSamplesByFilter
 {
     public class GetSamplesByFilterQueryHandler : ApplicationRequestHandler<Sample, GetSamplesByFilterQuery, GetSamplesByFilterQueryResponse>
     {
         private IStringLocalizer StringLocalizer { get; set; }
-        private IDefaultDbContext Context { get; set; }
+        private IDefaultDbContextReader Reader { get; set; }
         public GetSamplesByFilterQueryHandler(
             IStringLocalizer<Messages> stringLocalizer,
-            IDefaultDbContext context)
+            IDefaultDbContextReader reader)
         {
             StringLocalizer = stringLocalizer;
-            Context = context;
+            Reader = reader;
         }
         public override async Task<GetSamplesByFilterQueryResponse> Handle(GetSamplesByFilterQuery request, CancellationToken cancellationToken)
         {
             long resultCount = 0;
             
-            var data =  await Context.Samples
+            var data =  await Reader.Query<Sample>()
                 .FullSearch(request, out resultCount)
-                .AsNoTracking()
                 .ToListAsync(cancellationToken);
             
             return new GetSamplesByFilterQueryResponse(request, data, StringLocalizer["Successful operation!"], resultCount);
