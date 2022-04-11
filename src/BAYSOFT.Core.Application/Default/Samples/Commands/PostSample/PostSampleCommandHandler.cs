@@ -1,7 +1,7 @@
 using BAYSOFT.Abstractions.Core.Application;
-using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
-using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
+using BAYSOFT.Core.Domain.Default.Entities;
+using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
+using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.Extensions.Localization;
 using ModelWrapper.Extensions.Post;

@@ -1,6 +1,6 @@
 using BAYSOFT.Abstractions.Core.Application;
-using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
+using BAYSOFT.Core.Domain.Default.Entities;
+using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;

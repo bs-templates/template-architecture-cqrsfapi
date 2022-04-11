@@ -1,5 +1,4 @@
-﻿using BAYSOFT.Core.Domain.Entities.Default;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data.Default;
+﻿using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Infrastructures.Data.Contexts;
 using BAYSOFT.Infrastructures.Data.Default;
 using Microsoft.EntityFrameworkCore;

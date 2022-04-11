@@ -23,9 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BAYSOFT.Core.Application\BAYSOFT.Core.Application.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Domain.Entities\BAYSOFT.Core.Domain.Entities.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Domain.Services\BAYSOFT.Core.Domain.Services.csproj" />
-    <ProjectReference Include="..\BAYSOFT.Core.Domain.Validations\BAYSOFT.Core.Domain.Validations.csproj" />
     <ProjectReference Include="..\BAYSOFT.Core.Domain\BAYSOFT.Core.Domain.csproj" />
     <ProjectReference Include="..\BAYSOFT.Infrastructures.Data\BAYSOFT.Infrastructures.Data.csproj" />
     <ProjectReference Include="..\BAYSOFT.Infrastructures.Services\BAYSOFT.Infrastructures.Services.csproj" />

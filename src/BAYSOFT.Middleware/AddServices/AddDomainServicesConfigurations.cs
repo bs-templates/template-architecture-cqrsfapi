@@ -1,5 +1,5 @@
-﻿using BAYSOFT.Core.Domain.Interfaces.Services.Default.Samples;
-using BAYSOFT.Core.Domain.Services.Default.Samples;
+﻿using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
+using BAYSOFT.Core.Domain.Default.Services.Samples;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BAYSOFT.Middleware.AddServices

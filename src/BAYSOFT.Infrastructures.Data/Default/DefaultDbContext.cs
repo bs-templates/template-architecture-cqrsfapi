@@ -1,4 +1,4 @@
-﻿using BAYSOFT.Core.Domain.Entities.Default;
+﻿using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Infrastructures.Data.Default.EntityMappings;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Default.Entities;
 
 namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
 {

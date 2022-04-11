@@ -1,5 +1,5 @@
 using BAYSOFT.Abstractions.Core.Application;
-using BAYSOFT.Core.Domain.Entities.Default;
+using BAYSOFT.Core.Domain.Default.Entities;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
 {
