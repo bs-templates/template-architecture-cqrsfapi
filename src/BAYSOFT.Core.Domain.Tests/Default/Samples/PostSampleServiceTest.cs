@@ -16,8 +16,6 @@ namespace BAYSOFT.Core.Domain.Tests.Default.Samples
     {
         private PostSampleService GetMockedPostSampleService()
         {
-            var mockedMediator = new Mock<IMediator>();
-
             var mockedWriter = MockDefaultHelper
                 .GetMockedDefaultDbContextWriter()
                 .AddMockedSamples();
@@ -35,7 +33,6 @@ namespace BAYSOFT.Core.Domain.Tests.Default.Samples
                 mockedSampleNameAlreadyExistsSpecification);
 
             var mockedPostSampleService = new PostSampleService(
-                mockedMediator.Object,
                 mockedWriter.Object,
                 mockedSampleValidator,
                 mockedPostSampleSpecificationsValidator);

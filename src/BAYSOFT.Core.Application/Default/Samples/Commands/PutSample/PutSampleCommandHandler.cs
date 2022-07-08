@@ -2,8 +2,10 @@ using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
+using BAYSOFT.Core.Domain.Default.Notifications.Samples;
 using BAYSOFT.Core.Domain.Default.Resources;
 using BAYSOFT.Core.Domain.Resources;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using ModelWrapper.Extensions.Put;
@@ -15,16 +17,19 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 {
     public class PutSampleCommandHandler : ApplicationRequestHandler<Sample, PutSampleCommand, PutSampleCommandResponse>
     {
+        private IMediator Mediator { get; set; }
         private IStringLocalizer MessagesLocalizer { get; set; }
         private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
         public IDefaultDbContextWriter Writer { get; set; }
         private IPutSampleService PutService { get; set; }
         public PutSampleCommandHandler(
+            IMediator mediator,
             IStringLocalizer<Messages> messagesLocalizer,
             IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
             IDefaultDbContextWriter writer,
             IPutSampleService putService)
         {
+            Mediator = mediator;
             MessagesLocalizer = messagesLocalizer;
             EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
             Writer = writer;
@@ -43,6 +48,8 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
             request.Put(data);
 
             await PutService.Run(data);
+
+            await Mediator.Publish(new PutSampleNotification(data));
 
             await Writer.CommitAsync(cancellationToken);
 
