@@ -37,6 +37,8 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
         }
         public override async Task<PatchSampleCommandResponse> Handle(PatchSampleCommand request, CancellationToken cancellationToken)
         {
+            request.IsValid(true);
+
             var id = request.Project(x => x.Id);
 
             var data = await Writer.Query<Sample>().SingleOrDefaultAsync(x => x.Id == id);

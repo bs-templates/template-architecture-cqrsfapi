@@ -1,5 +1,6 @@
 using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Core.Domain.Default.Entities;
+using FluentValidation;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands.PostSample
 {
@@ -8,10 +9,10 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PostSample
         public PostSampleCommand()
         {
             ConfigKeys(x => x.Id);
-            
-            // Configures supressed properties & response properties
-            //ConfigSuppressedProperties(x => x);
-            //ConfigSuppressedResponseProperties(x => x);       
+
+            ConfigSuppressedProperties(x => x.Id);
+
+            Validator.RuleFor(x => x.Description).NotEmpty().WithMessage("{0} is required!");
         }
     }
 }

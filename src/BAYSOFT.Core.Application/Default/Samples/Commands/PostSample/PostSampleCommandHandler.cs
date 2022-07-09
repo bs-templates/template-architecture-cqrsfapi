@@ -32,6 +32,8 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PostSample
         }
         public override async Task<PostSampleCommandResponse> Handle(PostSampleCommand request, CancellationToken cancellationToken)
         {
+            request.IsValid(true);
+
             var data = request.Post();
 
             await PostService.Run(data);

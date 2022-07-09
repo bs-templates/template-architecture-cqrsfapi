@@ -36,6 +36,8 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
         }
         public override async Task<DeleteSampleCommandResponse> Handle(DeleteSampleCommand request, CancellationToken cancellationToken)
         {
+            request.IsValid(true);
+
             var id = request.Project(x => x.Id);
 
             var data = await Writer.Query<Sample>().SingleOrDefaultAsync(x => x.Id == id);
