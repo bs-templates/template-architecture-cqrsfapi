@@ -1,4 +1,5 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Resources;
@@ -13,18 +14,18 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById
 {
+    [InheritStringLocalizer(typeof(Messages), Priority = 0)]
+    [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
     public class GetSampleByIdQueryHandler : ApplicationRequestHandler<Sample, GetSampleByIdQuery, GetSampleByIdQueryResponse>
     {
         private IStringLocalizer MessagesLocalizer { get; set; }
-        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
+        private IStringLocalizer Localizer { get; set; }
         private IDefaultDbContextReader Reader { get; set; }
         public GetSampleByIdQueryHandler(
-            IStringLocalizer<Messages> messagesLocalizer,
-            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
+            IStringLocalizer<GetSampleByIdQueryHandler> localizer,
             IDefaultDbContextReader reader)
         {
-            MessagesLocalizer = messagesLocalizer;
-            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
+            Localizer = localizer;
             Reader = reader;
         }
         public override async Task<GetSampleByIdQueryResponse> Handle(GetSampleByIdQuery request, CancellationToken cancellationToken)
@@ -38,10 +39,10 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById
 
             if (data == null)
             {
-                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
+                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], Localizer[nameof(Sample)]));
             }
 
-            return new GetSampleByIdQueryResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
+            return new GetSampleByIdQueryResponse(request, data, Localizer["Successful operation!"], 1);
         }
     }
 }

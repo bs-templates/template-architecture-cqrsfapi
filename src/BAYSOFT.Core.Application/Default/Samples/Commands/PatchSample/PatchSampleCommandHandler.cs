@@ -1,4 +1,5 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
@@ -15,23 +16,22 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
 {
+    [InheritStringLocalizer(typeof(Messages), Priority = 0)]
+    [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
     public class PatchSampleCommandHandler : ApplicationRequestHandler<Sample, PatchSampleCommand, PatchSampleCommandResponse>
     {
         private IMediator Mediator { get; set; }
-        private IStringLocalizer MessagesLocalizer { get; set; }
-        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
+        private IStringLocalizer Localizer { get; set; }
         public IDefaultDbContextWriter Writer { get; set; }
         private IPatchSampleService PatchService { get; set; }
         public PatchSampleCommandHandler(
             IMediator mediator,
-            IStringLocalizer<Messages> messagesLocalizer,
-            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
+            IStringLocalizer<PatchSampleCommandHandler> localizer,
             IDefaultDbContextWriter writer,
             IPatchSampleService patchService)
         {
             Mediator = mediator;
-            MessagesLocalizer = messagesLocalizer;
-            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
+            Localizer = localizer;
             Writer = writer;
             PatchService = patchService;
         }
@@ -45,7 +45,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
 
             if (data == null)
             {
-                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
+                throw new Exception(string.Format(Localizer["{0} not found!"], Localizer[nameof(Sample)]));
             }
 
             request.Patch(data);
@@ -56,7 +56,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
 
             await Writer.CommitAsync(cancellationToken);
 
-            return new PatchSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
+            return new PatchSampleCommandResponse(request, data, Localizer["Successful operation!"], 1);
         }
     }
 }

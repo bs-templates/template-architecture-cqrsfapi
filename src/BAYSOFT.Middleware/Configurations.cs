@@ -1,4 +1,5 @@
-﻿using BAYSOFT.Middleware.AddServices;
+﻿using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
+using BAYSOFT.Middleware.AddServices;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,9 @@ namespace BAYSOFT.Middleware
                 .AddMaximumReturnedCollectionSize(100)
                 .AddQueryTermsMinimumSize(3)
                 .AddSuppressedTerms(new string[] { "the" });
-
+            
+            services.AddInheritStringLocalizerFactory();
+            
             // YOUR CODE GOES HERE
             return services;
         }

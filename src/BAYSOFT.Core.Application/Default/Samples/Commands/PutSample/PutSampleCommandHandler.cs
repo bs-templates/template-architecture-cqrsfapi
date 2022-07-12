@@ -1,4 +1,5 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
@@ -15,23 +16,22 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 {
+    [InheritStringLocalizer(typeof(Messages), Priority = 0)]
+    [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
     public class PutSampleCommandHandler : ApplicationRequestHandler<Sample, PutSampleCommand, PutSampleCommandResponse>
     {
         private IMediator Mediator { get; set; }
-        private IStringLocalizer MessagesLocalizer { get; set; }
-        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
+        private IStringLocalizer Localizer { get; set; }
         public IDefaultDbContextWriter Writer { get; set; }
         private IPutSampleService PutService { get; set; }
         public PutSampleCommandHandler(
             IMediator mediator,
-            IStringLocalizer<Messages> messagesLocalizer,
-            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
+            IStringLocalizer<PutSampleCommandHandler> localizer,
             IDefaultDbContextWriter writer,
             IPutSampleService putService)
         {
             Mediator = mediator;
-            MessagesLocalizer = messagesLocalizer;
-            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
+            Localizer = localizer;
             Writer = writer;
             PutService = putService;
         }
@@ -44,7 +44,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 
             if (data == null)
             {
-                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
+                throw new Exception(string.Format(Localizer["{0} not found!"], Localizer[nameof(Sample)]));
             }
 
             request.Put(data);
@@ -55,7 +55,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PutSample
 
             await Writer.CommitAsync(cancellationToken);
 
-            return new PutSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
+            return new PutSampleCommandResponse(request, data, Localizer["Successful operation!"], 1);
         }
     }
 }

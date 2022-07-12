@@ -1,4 +1,5 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Interfaces.Services.Samples;
@@ -14,23 +15,22 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
 {
+    [InheritStringLocalizer(typeof(Messages), Priority = 0)]
+    [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
     public class DeleteSampleCommandHandler : ApplicationRequestHandler<Sample, DeleteSampleCommand, DeleteSampleCommandResponse>
     {
         private IMediator Mediator { get; set; }
-        private IStringLocalizer MessagesLocalizer { get; set; }
-        private IStringLocalizer EntitiesDefaultLocalizer { get; set; }
+        private IStringLocalizer Localizer { get; set; }
         public IDefaultDbContextWriter Writer { get; set; }
         private IDeleteSampleService DeleteService { get; set; }
         public DeleteSampleCommandHandler(
             IMediator mediator,
-            IStringLocalizer<Messages> messagesLocalizer,
-            IStringLocalizer<EntitiesDefault> entitiesDefaultLocalizer,
+            IStringLocalizer<DeleteSampleCommandHandler> localizer,
             IDefaultDbContextWriter writer,
             IDeleteSampleService deleteService)
         {
             Mediator = mediator;
-            MessagesLocalizer = messagesLocalizer;
-            EntitiesDefaultLocalizer = entitiesDefaultLocalizer;
+            Localizer = localizer;
             Writer = writer;
             DeleteService = deleteService;
         }
@@ -44,7 +44,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
 
             if (data == null)
             {
-                throw new Exception(string.Format(MessagesLocalizer["{0} not found!"], EntitiesDefaultLocalizer[nameof(Sample)]));
+                throw new Exception(string.Format(Localizer["{0} not found!"], Localizer[nameof(Sample)]));
             }
 
             await DeleteService.Run(data);
@@ -53,7 +53,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample
 
             await Writer.CommitAsync(cancellationToken);
 
-            return new DeleteSampleCommandResponse(request, data, MessagesLocalizer["Successful operation!"], 1);
+            return new DeleteSampleCommandResponse(request, data, Localizer["Successful operation!"], 1);
         }
     }
 }
