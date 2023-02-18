@@ -35,6 +35,7 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample
             Writer = writer;
             PatchService = patchService;
         }
+
         public override async Task<PatchSampleCommandResponse> Handle(PatchSampleCommand request, CancellationToken cancellationToken)
         {
             request.IsValid(true);
