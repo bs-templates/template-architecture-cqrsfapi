@@ -1,9 +1,5 @@
-﻿using BAYSOFT.Core.Application.Default.Samples.Commands.DeleteSample;
-using BAYSOFT.Core.Application.Default.Samples.Commands.PatchSample;
-using BAYSOFT.Core.Application.Default.Samples.Commands.PostSample;
-using BAYSOFT.Core.Application.Default.Samples.Commands.PutSample;
-using BAYSOFT.Core.Application.Default.Samples.Queries.GetSampleById;
-using BAYSOFT.Core.Application.Default.Samples.Queries.GetSamplesByFilter;
+﻿using BAYSOFT.Core.Application.Default.Samples.Commands;
+using BAYSOFT.Core.Application.Default.Samples.Queries;
 using BAYSOFT.Presentations.WebAPI.Abstractions.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;

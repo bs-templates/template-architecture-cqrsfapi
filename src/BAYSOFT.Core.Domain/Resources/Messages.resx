@@ -97,10 +97,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Successful operation!" xml:space="preserve">
-    <value>Successful operation!</value>
+  <data name="{0} must have at least 3 characters!" xml:space="preserve">
+    <value>{0} must have at least 3 characters!</value>
+  </data>
+  <data name="{0} must have a maximum of 100 characters!" xml:space="preserve">
+    <value>{0} must have a maximum of 100 characters!</value>
+  </data>
+  <data name="A register with this description already exists!" xml:space="preserve">
+    <value>A register with this description already exists!</value>
+  </data>
+  <data name="{0} cannot be empty!" xml:space="preserve">
+    <value>{0} cannot be empty!</value>
+  </data>
+  <data name="{0} cannot be null!" xml:space="preserve">
+    <value>{0} cannot be null!</value>
   </data>
   <data name="{0} not found!" xml:space="preserve">
     <value>{0} not found!</value>
+  </data>
+  <data name="{0} is required!" xml:space="preserve">
+    <value>{0} is required!</value>
+  </data>
+  <data name="Operation failed in domain validation!" xml:space="preserve">
+    <value>Operation failed in domain validation!</value>
+  </data>
+  <data name="Operation failed in entity validation!" xml:space="preserve">
+    <value>Operation failed in entity validation!</value>
+  </data>
+  <data name="Operation failed in request validation!" xml:space="preserve">
+    <value>Operation failed in request validation!</value>
+  </data>
+  <data name="Successful operation!" xml:space="preserve">
+    <value>Successful operation!</value>
   </data>
 </root>

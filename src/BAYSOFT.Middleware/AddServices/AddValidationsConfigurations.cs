@@ -21,9 +21,8 @@ namespace BAYSOFT.Middleware.AddServices
         }
         public static IServiceCollection AddDomainValidations(this IServiceCollection services)
         {
-            services.AddTransient<PutSampleSpecificationsValidator>();
-            services.AddTransient<PostSampleSpecificationsValidator>();
-            services.AddTransient<PatchSampleSpecificationsValidator>();
+            services.AddTransient<UpdateSampleSpecificationsValidator>();
+            services.AddTransient<CreateSampleSpecificationsValidator>();
             services.AddTransient<DeleteSampleSpecificationsValidator>();
 
             return services;

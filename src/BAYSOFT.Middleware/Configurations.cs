@@ -22,9 +22,11 @@ namespace BAYSOFT.Middleware
             services.AddDomainValidations();
             services.AddDomainServices();
 
-            var assembly = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
-
-            services.AddMediatR(assembly);
+            var assemblyApplication = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
+            services.AddMediatR(assemblyApplication);
+            
+            var assemblyDomain = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Domain");
+            services.AddMediatR(assemblyDomain);
 
             services.AddModelWrapper()
                 .AddDefaultReturnedCollectionSize(10)

@@ -100,4 +100,7 @@
   <data name="Sample" xml:space="preserve">
     <value>Sample</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Domain.Default.Services.Samples
 {
-    public class DeleteSampleServiceRequest : IRequest<Sample>
+    public class CreateSampleServiceRequest : IRequest<Sample>
     {
         public Sample Payload { get; set; }
-        public DeleteSampleServiceRequest(Sample payload)
+        public CreateSampleServiceRequest(Sample payload)
         {
             Payload = payload;
         }
@@ -24,35 +24,32 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
 
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
-    public class DeleteSampleServiceRequestHandler : DomainService<Sample>,IRequestHandler<DeleteSampleServiceRequest, Sample>
+    public class CreateSampleServiceRequestHandler : DomainService<Sample>, IRequestHandler<CreateSampleServiceRequest, Sample>
     {
         private IDefaultDbContextWriter Writer { get; set; }
-        public DeleteSampleServiceRequestHandler(
+        public CreateSampleServiceRequestHandler(
             IDefaultDbContextWriter writer,
-            IStringLocalizer<DeleteSampleServiceRequestHandler> localizer,
+            IStringLocalizer<CreateSampleServiceRequestHandler> localizer,
             SampleValidator entityValidator,
-            DeleteSampleSpecificationsValidator domainValidator
+            CreateSampleSpecificationsValidator domainValidator
         ) : base(localizer, entityValidator, domainValidator)
         {
             Writer = writer;
         }
+        public async Task<Sample> Handle(CreateSampleServiceRequest request, CancellationToken cancellationToken)
+        {
+            await Run(request.Payload);
 
-        public override Task Run(Sample entity)
+            return request.Payload;
+        }
+
+        public async override Task Run(Sample entity)
         {
             ValidateEntity(entity);
 
             ValidateDomain(entity);
 
-            Writer.Remove(entity);
-
-            return Task.CompletedTask;
-        }
-
-        public async Task<Sample> Handle(DeleteSampleServiceRequest request, CancellationToken cancellationToken)
-        {
-            await Run(request.Payload);
-
-            return request.Payload;
+            await Writer.AddAsync(entity);
         }
     }
 }

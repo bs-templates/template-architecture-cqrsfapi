@@ -1,12 +1,23 @@
-﻿using BAYSOFT.Core.Domain.Default.Notifications.Samples;
+﻿using BAYSOFT.Core.Domain.Default.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BAYSOFT.Core.Application.Default.Samples.NotificationHandlers
+namespace BAYSOFT.Core.Application.Default.Samples.Notifications
 {
+    public class DeleteSampleNotification : INotification
+    {
+        public Sample Payload { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DeleteSampleNotification(Sample payload)
+        {
+            Payload = payload;
+            CreatedAt = DateTime.UtcNow;
+        }
+    }
     public class DeleteSampleNotificationHandler : INotificationHandler<DeleteSampleNotification>
     {
         public ILoggerFactory Logger { get; private set; }

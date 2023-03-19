@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Domain.Default.Services.Samples
 {
-    public class DeleteSampleServiceRequest : IRequest<Sample>
+    public class UpdateSampleServiceRequest : IRequest<Sample>
     {
         public Sample Payload { get; set; }
-        public DeleteSampleServiceRequest(Sample payload)
+        public UpdateSampleServiceRequest(Sample payload)
         {
             Payload = payload;
         }
@@ -24,14 +24,14 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
 
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
-    public class DeleteSampleServiceRequestHandler : DomainService<Sample>,IRequestHandler<DeleteSampleServiceRequest, Sample>
+    public class UpdateSampleServiceRequestHandler : DomainService<Sample>, IRequestHandler<UpdateSampleServiceRequest, Sample>
     {
         private IDefaultDbContextWriter Writer { get; set; }
-        public DeleteSampleServiceRequestHandler(
+        public UpdateSampleServiceRequestHandler(
             IDefaultDbContextWriter writer,
-            IStringLocalizer<DeleteSampleServiceRequestHandler> localizer,
+            IStringLocalizer<UpdateSampleServiceRequestHandler> localizer,
             SampleValidator entityValidator,
-            DeleteSampleSpecificationsValidator domainValidator
+            UpdateSampleSpecificationsValidator domainValidator
         ) : base(localizer, entityValidator, domainValidator)
         {
             Writer = writer;
@@ -43,12 +43,10 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
 
             ValidateDomain(entity);
 
-            Writer.Remove(entity);
-
             return Task.CompletedTask;
         }
 
-        public async Task<Sample> Handle(DeleteSampleServiceRequest request, CancellationToken cancellationToken)
+        public async Task<Sample> Handle(UpdateSampleServiceRequest request, CancellationToken cancellationToken)
         {
             await Run(request.Payload);
 

@@ -1,16 +1,23 @@
-﻿using BAYSOFT.Core.Domain.Default.Notifications.Samples;
+﻿using BAYSOFT.Core.Domain.Default.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BAYSOFT.Core.Application.Default.Samples.NotificationHandlers
+namespace BAYSOFT.Core.Application.Default.Samples.Notifications
 {
+    public class PatchSampleNotification : INotification
+    {
+        public Sample Payload { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public PatchSampleNotification(Sample payload)
+        {
+            Payload = payload;
+            CreatedAt = DateTime.UtcNow;
+        }
+    }
     public class PatchSampleNotificationHandler : INotificationHandler<PatchSampleNotification>
     {
         public ILoggerFactory Logger { get; private set; }
