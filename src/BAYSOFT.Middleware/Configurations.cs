@@ -34,7 +34,9 @@ namespace BAYSOFT.Middleware
                 .AddSuppressedTerms(new string[] { "the" });
             
             services.AddInheritStringLocalizerFactory();
-            
+
+            services.AddSwaggerGen();
+
             // YOUR CODE GOES HERE
             return services;
         }
@@ -49,6 +51,9 @@ namespace BAYSOFT.Middleware
                 .AddSupportedUICultures(supportedCultures);
             
             app.UseRequestLocalization(localizationOptions);
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             //app.UseAuthentication();
             //app.UseAuthorization();
