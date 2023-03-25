@@ -10,12 +10,18 @@ namespace BAYSOFT.Infrastructures.Data.Contexts
 
         protected DefaultDbContext()
         {
-            Database.Migrate();
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
         }
 
         public DefaultDbContext(DbContextOptions options) : base(options)
         {
-            Database.Migrate();
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
