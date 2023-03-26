@@ -27,13 +27,17 @@ namespace BAYSOFT.Presentations.WebAPI.Abstractions.Controllers
             {
                 return Ok(await Mediator.Send(request, cancellationToken));
             }
-            catch (BusinessException bex)
+            catch (BusinessException ex)
             {
-                return BadRequest(new WrapResponse(400, 4001001, request.RequestObject, MapBusinessExceptionToDictionary(bex), bex.Message, 0));
+                return WrapException(new WrapResponse(ex.ExceptionCode, ex.ExceptionInternalCode, request.GetRequestObject(), MapBusinessExceptionToDictionary(ex), ex.Message, 0));
+            }
+            catch (BaysoftException ex)
+            {
+                return WrapException(new WrapResponse(ex.ExceptionCode, ex.ExceptionInternalCode, request.GetRequestObject(), ex.InnerException, ex.Message, 0));
             }
             catch (Exception ex)
             {
-                return BadRequest(new WrapResponse(400, 4001001, request.RequestObject, ex.InnerException, ex.Message, 0));
+                return WrapException(new WrapResponse(500, 5001000, request.GetRequestObject(), ex.InnerException, ex.Message, 0));
             }
         }
 
@@ -85,6 +89,15 @@ namespace BAYSOFT.Presentations.WebAPI.Abstractions.Controllers
             }
 
             return exceptionDictionary;
+        }
+
+        private ActionResult WrapException(WrapResponse response)
+        {
+            var objectResult = new ObjectResult(response);
+
+            objectResult.StatusCode = response.StatusCode;
+
+            return objectResult;
         }
     }
 }

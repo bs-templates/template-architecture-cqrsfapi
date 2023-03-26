@@ -176,7 +176,7 @@ namespace BAYSOFT.Tests.IntegrationTests.Samples
             }
         }
         [TestMethod]
-        public async Task DELETE_Samples_Should_Return_BadRequest()
+        public async Task DELETE_Samples_Where_Sample_Doesnt_Exists_Should_Return_NotFound()
         {
             var contextData = new List<Sample>{
                 new Sample { Id = 1, Description = "Sample 01" },
@@ -186,7 +186,7 @@ namespace BAYSOFT.Tests.IntegrationTests.Samples
             {
                 var response = await client.DeleteAsync($"/api/samples/2");
 
-                Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
             }
         }
     }

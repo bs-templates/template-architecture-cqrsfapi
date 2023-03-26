@@ -32,7 +32,7 @@ namespace BAYSOFT.Tests
         {
             app.UseHttpsRedirection();
 
-            app.UseMiddleware();
+            app.UseMiddlewareTest();
 
             app.UseRouting();
 
