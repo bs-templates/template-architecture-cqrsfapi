@@ -1,15 +1,21 @@
 ﻿using BAYSOFT.Abstractions.Core.Domain.Entities;
+using BAYSOFT.Infrastructures.Data.Contexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Moq;
 
 namespace BAYSOFT.Tests.Helpers
 {
     public static class ServerHelper
     {
-        public static TestServer Create()
+        public static TestServer Create(Action<IServiceCollection>? actionServices = null)
         {
+            if (actionServices != null)
+                return new TestServer(new WebHostBuilder().ConfigureTestServices(actionServices).UseStartup<TestStartup>());
+
             return new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
         }
 

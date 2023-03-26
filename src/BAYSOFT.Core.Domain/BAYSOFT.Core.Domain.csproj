@@ -36,7 +36,6 @@
   <ItemGroup>
     <Folder Include="Default\Interfaces\Services\" />
     <Folder Include="Default\Notifications\" />
-    <Folder Include="Interfaces\Services\" />
   </ItemGroup>
 
 </Project>

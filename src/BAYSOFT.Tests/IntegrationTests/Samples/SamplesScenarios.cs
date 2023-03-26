@@ -1,7 +1,11 @@
 ﻿using BAYSOFT.Core.Domain.Default.Entities;
+using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Services;
 using BAYSOFT.Infrastructures.Data.Contexts;
 using BAYSOFT.Tests.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 using System.Net;
 
@@ -70,6 +74,14 @@ namespace BAYSOFT.Tests.IntegrationTests.Samples
 
             var data = new Sample { Description = "Sample 02" };
 
+            //var mock = Mock.Of<IEmailService>();
+            //Mock.Get(mock)
+            //    .Setup(x => x.GetCharacterName())
+            //    .ReturnsAsync("Skywalker, Luke");
+
+            //Action<IServiceCollection> services = s => { s.RemoveAll<IEmailService>(); s.TryAddTransient<IEmailService>(sf => mock); };
+
+            //using (var client = ServerHelper.Create(services).SetupData<DefaultDbContext, Sample>(contextData).CreateClient())
             using (var client = ServerHelper.Create().SetupData<DefaultDbContext, Sample>(contextData).CreateClient())
             {
                 var json = JsonConvert.SerializeObject(data);
