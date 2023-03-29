@@ -1,15 +1,14 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Core.Domain.Exceptions;
 using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Resources;
-using BAYSOFT.Core.Domain.Exceptions;
 using BAYSOFT.Core.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using ModelWrapper;
 using ModelWrapper.Extensions.Select;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

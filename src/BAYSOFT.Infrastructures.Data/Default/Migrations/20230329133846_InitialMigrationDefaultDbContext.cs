@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BAYSOFT.Presentations.WebAPI.Migrations
+#nullable disable
+
+namespace BAYSOFT.Infrastructures.Data.Default.Migrations
 {
-    public partial class InitialDefaultDb : Migration
+    /// <inheritdoc />
+    public partial class InitialMigrationDefaultDbContext : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -12,7 +16,7 @@ namespace BAYSOFT.Presentations.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(512)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -20,6 +24,7 @@ namespace BAYSOFT.Presentations.WebAPI.Migrations
                 });
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

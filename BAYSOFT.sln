@@ -29,7 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAYSOFT.Presentations.WebAP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{00387E9B-39F1-467A-8DBD-FD5D7CAB1E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAYSOFT.Tests", "src\BAYSOFT.Tests\BAYSOFT.Tests.csproj", "{38AF8229-731F-4E78-B681-8CF097169672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAYSOFT.Tests", "src\BAYSOFT.Tests\BAYSOFT.Tests.csproj", "{38AF8229-731F-4E78-B681-8CF097169672}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1B66749-91B2-48FD-964A-092E00C37162}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

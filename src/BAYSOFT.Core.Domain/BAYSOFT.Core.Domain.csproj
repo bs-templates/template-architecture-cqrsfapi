@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BAYSOFT.Abstractions" Version="1.1.0" />
+    <PackageReference Include="BAYSOFT.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
@@ -36,6 +36,8 @@
   <ItemGroup>
     <Folder Include="Default\Interfaces\Services\" />
     <Folder Include="Default\Notifications\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Interfaces\Services\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using BAYSOFT.Abstractions.Core.Domain.Services;
+﻿using BAYSOFT.Abstractions.Core.Domain.Interfaces.Services;
+using BAYSOFT.Abstractions.Core.Domain.Services;
 using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
@@ -24,7 +25,7 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
 
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
-    public class UpdateSampleServiceRequestHandler : DomainService<Sample>, IRequestHandler<UpdateSampleServiceRequest, Sample>
+    public class UpdateSampleServiceRequestHandler : DomainService<Sample, UpdateSampleServiceRequest>, IDomainService<Sample, UpdateSampleServiceRequest>
     {
         private IDefaultDbContextWriter Writer { get; set; }
         public UpdateSampleServiceRequestHandler(
@@ -37,18 +38,11 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
             Writer = writer;
         }
 
-        public override Task Run(Sample entity)
+        public override async Task<Sample> Handle(UpdateSampleServiceRequest request, CancellationToken cancellationToken)
         {
-            ValidateEntity(entity);
+            ValidateEntity(request.Payload);
 
-            ValidateDomain(entity);
-
-            return Task.CompletedTask;
-        }
-
-        public async Task<Sample> Handle(UpdateSampleServiceRequest request, CancellationToken cancellationToken)
-        {
-            await Run(request.Payload);
+            ValidateDomain(request.Payload);
 
             return request.Payload;
         }

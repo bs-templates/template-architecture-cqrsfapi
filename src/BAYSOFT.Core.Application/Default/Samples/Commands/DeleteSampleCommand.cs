@@ -1,18 +1,17 @@
 using BAYSOFT.Abstractions.Core.Application;
+using BAYSOFT.Abstractions.Core.Domain.Exceptions;
 using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Application.Default.Samples.Notifications;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Resources;
 using BAYSOFT.Core.Domain.Default.Services.Samples;
-using BAYSOFT.Core.Domain.Exceptions;
 using BAYSOFT.Core.Domain.Resources;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using ModelWrapper;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,8 +24,6 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands
         {
         }
     }
-    [InheritStringLocalizer(typeof(Messages), Priority = 0)]
-    [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
     public class DeleteSampleCommand : ApplicationRequest<Sample, DeleteSampleCommandResponse>
     {
         public DeleteSampleCommand()

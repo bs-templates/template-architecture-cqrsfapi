@@ -1,4 +1,5 @@
-﻿using BAYSOFT.Abstractions.Core.Domain.Services;
+﻿using BAYSOFT.Abstractions.Core.Domain.Interfaces.Services;
+using BAYSOFT.Abstractions.Core.Domain.Services;
 using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
@@ -24,7 +25,7 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
 
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
-    public class DeleteSampleServiceRequestHandler : DomainService<Sample>,IRequestHandler<DeleteSampleServiceRequest, Sample>
+    public class DeleteSampleServiceRequestHandler : DomainService<Sample, DeleteSampleServiceRequest>, IDomainService<Sample, DeleteSampleServiceRequest>
     {
         private IDefaultDbContextWriter Writer { get; set; }
         public DeleteSampleServiceRequestHandler(
@@ -37,20 +38,13 @@ namespace BAYSOFT.Core.Domain.Default.Services.Samples
             Writer = writer;
         }
 
-        public override Task Run(Sample entity)
+        public override async Task<Sample> Handle(DeleteSampleServiceRequest request, CancellationToken cancellationToken)
         {
-            ValidateEntity(entity);
+            ValidateEntity(request.Payload);
 
-            ValidateDomain(entity);
+            ValidateDomain(request.Payload);
 
-            Writer.Remove(entity);
-
-            return Task.CompletedTask;
-        }
-
-        public async Task<Sample> Handle(DeleteSampleServiceRequest request, CancellationToken cancellationToken)
-        {
-            await Run(request.Payload);
+            Writer.Remove(request.Payload);
 
             return request.Payload;
         }

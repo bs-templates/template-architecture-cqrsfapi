@@ -16,7 +16,7 @@ namespace BAYSOFT.Middleware
         {
             services.AddLocalization();
 
-            services.AddDbContexts(configuration, presentationAssembly);
+            services.AddDbContexts(configuration);
             services.AddSpecifications();
             services.AddEntityValidations();
             services.AddDomainValidations();
@@ -65,7 +65,7 @@ namespace BAYSOFT.Middleware
         {
             services.AddLocalization();
 
-            services.AddDbContextsTest(configuration, presentationAssembly);
+            services.AddDbContextsTest(configuration);
             services.AddSpecifications();
             services.AddEntityValidations();
             services.AddDomainValidations();
