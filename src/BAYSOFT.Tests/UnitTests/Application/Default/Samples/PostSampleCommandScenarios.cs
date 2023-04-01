@@ -1,6 +1,5 @@
 ﻿using BAYSOFT.Core.Application.Default.Samples.Commands;
 using BAYSOFT.Core.Domain.Default.Entities;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Services;
 using BAYSOFT.Infrastructures.Data.Default;
 using BAYSOFT.Tests.Helpers;
 using MediatR;

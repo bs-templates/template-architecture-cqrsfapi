@@ -1,42 +1,19 @@
-using BAYSOFT.Abstractions.Core.Application;
+﻿using BAYSOFT.Abstractions.Core.Application;
 using BAYSOFT.Abstractions.Crosscutting.InheritStringLocalization;
 using BAYSOFT.Core.Application.Default.Samples.Notifications;
 using BAYSOFT.Core.Domain.Default.Entities;
 using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
 using BAYSOFT.Core.Domain.Default.Resources;
 using BAYSOFT.Core.Domain.Default.Services.Samples;
-using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Services;
 using BAYSOFT.Core.Domain.Resources;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using ModelWrapper;
 using ModelWrapper.Extensions.Post;
-using Newtonsoft.Json;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Application.Default.Samples.Commands
 {
-    public class PostSampleCommandResponse : ApplicationResponse<Sample>
-    {
-        public PostSampleCommandResponse(WrapRequest<Sample> request, object data, string message = "Successful operation!", long? resultCount = null)
-            : base(request, data, message, resultCount)
-        {
-        }
-    }
-    public class PostSampleCommand : ApplicationRequest<Sample, PostSampleCommandResponse>
-    {
-        public PostSampleCommand()
-        {
-            ConfigKeys(x => x.Id);
-
-            ConfigSuppressedProperties(x => x.Id);
-
-            Validator.RuleFor(x => x.Description).NotEmpty().WithMessage("{0} is required!");
-        }
-    }
 
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
@@ -59,15 +36,17 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands
         {
             request.IsValid(Localizer, true);
 
+            long resultCount = 1;
+
             var data = request.Post();
 
-            await Mediator.Send(new CreateSampleServiceRequest(data));
+            await Mediator.Send(new CreateSampleRequest(data));
 
             await Mediator.Publish(new PostSampleNotification(data));
 
             await Writer.CommitAsync(cancellationToken);
 
-            return new PostSampleCommandResponse(request, data, Localizer["Successful operation!"], 1);
+            return new PostSampleCommandResponse(request, data, Localizer["Successful operation!"], resultCount);
         }
     }
 }

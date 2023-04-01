@@ -24,7 +24,7 @@ namespace BAYSOFT.Tests.UnitTests.Application.Default.Samples
 
                 var mockedLocalizer = new Mock<IStringLocalizer<GetSampleByIdQueryHandler>>();
 
-                var handler = new GetSampleByIdQueryHandler(mockedLocalizer.Object, reader);
+                var handler = new GetSampleByIdQueryHandler(mockedMediator.Object,  mockedLocalizer.Object, reader);
 
                 var command = new GetSampleByIdQuery();
 

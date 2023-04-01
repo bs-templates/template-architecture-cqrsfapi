@@ -7,42 +7,34 @@ using BAYSOFT.Core.Domain.Default.Resources;
 using BAYSOFT.Core.Domain.Default.Validations.DomainValidations.Samples;
 using BAYSOFT.Core.Domain.Default.Validations.EntityValidations;
 using BAYSOFT.Core.Domain.Resources;
-using MediatR;
 using Microsoft.Extensions.Localization;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BAYSOFT.Core.Domain.Default.Services.Samples
 {
-    public class UpdateSampleServiceRequest : IRequest<Sample>
-    {
-        public Sample Payload { get; set; }
-        public UpdateSampleServiceRequest(Sample payload)
-        {
-            Payload = payload;
-        }
-    }
-
     [InheritStringLocalizer(typeof(Messages), Priority = 0)]
     [InheritStringLocalizer(typeof(EntitiesDefault), Priority = 1)]
-    public class UpdateSampleServiceRequestHandler : DomainService<Sample, UpdateSampleServiceRequest>, IDomainService<Sample, UpdateSampleServiceRequest>
+    public class DeleteSampleRequestHandler
+        : DomainService<Sample, DeleteSampleRequest>, IDomainService<Sample, DeleteSampleRequest>
     {
         private IDefaultDbContextWriter Writer { get; set; }
-        public UpdateSampleServiceRequestHandler(
+        public DeleteSampleRequestHandler(
             IDefaultDbContextWriter writer,
-            IStringLocalizer<UpdateSampleServiceRequestHandler> localizer,
+            IStringLocalizer<DeleteSampleRequestHandler> localizer,
             SampleValidator entityValidator,
-            UpdateSampleSpecificationsValidator domainValidator
+            DeleteSampleSpecificationsValidator domainValidator
         ) : base(localizer, entityValidator, domainValidator)
         {
             Writer = writer;
         }
-
-        public override async Task<Sample> Handle(UpdateSampleServiceRequest request, CancellationToken cancellationToken)
+        public override async Task<Sample> Handle(DeleteSampleRequest request, CancellationToken cancellationToken)
         {
             ValidateEntity(request.Payload);
 
             ValidateDomain(request.Payload);
+
+            Writer.Remove(request.Payload);
 
             return request.Payload;
         }
