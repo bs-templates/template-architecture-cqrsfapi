@@ -14,7 +14,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.Migrations
                 name: "Samples",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(name: "", type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(512)", nullable: true)
                 },

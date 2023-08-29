@@ -1,8 +1,8 @@
-﻿using BAYSOFT.Core.Domain.Default.Entities;
+﻿using BAYSOFT.Core.Domain.Default.Samples.Entities;
 using BAYSOFT.Infrastructures.Data.Default.EntityMappings;
 using Microsoft.EntityFrameworkCore;
 
-namespace BAYSOFT.Infrastructures.Data.Contexts
+namespace BAYSOFT.Infrastructures.Data.Default
 {
     public class DefaultDbContext : DbContext
     {
@@ -16,7 +16,7 @@ namespace BAYSOFT.Infrastructures.Data.Contexts
             }
         }
 
-        public DefaultDbContext(DbContextOptions options) : base(options)
+        public DefaultDbContext(DbContextOptions<DefaultDbContext> options) : base(options)
         {
             if (Database.IsRelational())
             {
@@ -25,6 +25,8 @@ namespace BAYSOFT.Infrastructures.Data.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("dbo");
+
             modelBuilder.ApplyConfiguration(new SampleMap());
         }
     }

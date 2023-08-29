@@ -24,7 +24,8 @@ namespace BAYSOFT.Middleware
 
             var assemblyApplication = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
             var assemblyDomain = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Domain");
-            services.AddMediatR(options => options.RegisterServicesFromAssemblies(assemblyApplication, assemblyDomain));
+            var assemblyInfrastructuresServices = AppDomain.CurrentDomain.Load("BAYSOFT.Infrastructures.Services");
+            services.AddMediatR(options => options.RegisterServicesFromAssemblies(assemblyApplication, assemblyDomain, assemblyInfrastructuresServices));
 
             services.AddModelWrapper()
                 .AddDefaultReturnedCollectionSize(10)
@@ -73,7 +74,8 @@ namespace BAYSOFT.Middleware
 
             var assemblyApplication = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Application");
             var assemblyDomain = AppDomain.CurrentDomain.Load("BAYSOFT.Core.Domain");
-            services.AddMediatR(options => options.RegisterServicesFromAssemblies(assemblyApplication, assemblyDomain));
+            var assemblyInfrastructuresServices = AppDomain.CurrentDomain.Load("BAYSOFT.Infrastructures.Services");
+            services.AddMediatR(options => options.RegisterServicesFromAssemblies(assemblyApplication, assemblyDomain, assemblyInfrastructuresServices));
 
             services.AddModelWrapper()
                 .AddDefaultReturnedCollectionSize(10)

@@ -1,4 +1,4 @@
-﻿using BAYSOFT.Core.Domain.Default.Entities;
+﻿using BAYSOFT.Core.Domain.Default.Samples.Entities;
 using MediatR;
 using System;
 

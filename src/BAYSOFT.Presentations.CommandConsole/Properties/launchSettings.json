@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BAYSOFT.Presentations.CommandConsole": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

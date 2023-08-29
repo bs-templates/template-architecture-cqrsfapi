@@ -61,65 +61,56 @@ namespace BAYSOFT.Core.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} cannot be empty!.
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be empty!.
         /// </summary>
-        public static string _0__cannot_be_empty_ {
+        public static string @__0___cannot_be_empty_ {
             get {
-                return ResourceManager.GetString("{0} cannot be empty!", resourceCulture);
+                return ResourceManager.GetString("\'{0}\' cannot be empty!", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} cannot be null!.
+        ///   Looks up a localized string similar to &apos;{0}&apos; cannot be null!.
         /// </summary>
-        public static string _0__cannot_be_null_ {
+        public static string @__0___cannot_be_null_ {
             get {
-                return ResourceManager.GetString("{0} cannot be null!", resourceCulture);
+                return ResourceManager.GetString("\'{0}\' cannot be null!", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is required!.
+        ///   Looks up a localized string similar to &apos;{0}&apos; is required!.
         /// </summary>
-        public static string _0__is_required_ {
+        public static string @__0___is_required_ {
             get {
-                return ResourceManager.GetString("{0} is required!", resourceCulture);
+                return ResourceManager.GetString("\'{0}\' is required!", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} must have a maximum of 100 characters!.
+        ///   Looks up a localized string similar to &apos;{0}&apos; not found!.
         /// </summary>
-        public static string _0__must_have_a_maximum_of_100_characters_ {
+        public static string @__0___not_found_ {
             get {
-                return ResourceManager.GetString("{0} must have a maximum of 100 characters!", resourceCulture);
+                return ResourceManager.GetString("\'{0}\' not found!", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} must have at least 3 characters!.
+        ///   Looks up a localized string similar to &apos;{3}&apos; must have a maximum of &apos;{1}&apos; characters!.
         /// </summary>
-        public static string _0__must_have_at_least_3_characters_ {
+        public static string @__3___must_have_a_maximum_of___1___characters_ {
             get {
-                return ResourceManager.GetString("{0} must have at least 3 characters!", resourceCulture);
+                return ResourceManager.GetString("\'{3}\' must have a maximum of \'{1}\' characters!", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} not found!.
+        ///   Looks up a localized string similar to &apos;{3}&apos; must have at least &apos;{0}&apos; characters!.
         /// </summary>
-        public static string _0__not_found_ {
+        public static string @__3___must_have_at_least___0___characters_ {
             get {
-                return ResourceManager.GetString("{0} not found!", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A register with this description already exists!.
-        /// </summary>
-        public static string A_register_with_this_description_already_exists_ {
-            get {
-                return ResourceManager.GetString("A register with this description already exists!", resourceCulture);
+                return ResourceManager.GetString("\'{3}\' must have at least \'{0}\' characters!", resourceCulture);
             }
         }
         
@@ -156,6 +147,15 @@ namespace BAYSOFT.Core.Domain.Resources {
         public static string Successful_operation_ {
             get {
                 return ResourceManager.GetString("Successful operation!", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsuccessful operation!.
+        /// </summary>
+        public static string Unsuccessful_operation_ {
+            get {
+                return ResourceManager.GetString("Unsuccessful operation!", resourceCulture);
             }
         }
     }

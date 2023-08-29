@@ -1,6 +1,6 @@
-﻿using BAYSOFT.Core.Domain.Default.Specifications.Samples;
-using BAYSOFT.Core.Domain.Default.Validations.DomainValidations.Samples;
-using BAYSOFT.Core.Domain.Default.Validations.EntityValidations;
+﻿using BAYSOFT.Core.Domain.Default.Samples.Specifications;
+using BAYSOFT.Core.Domain.Default.Samples.Validations.DomainValidations;
+using BAYSOFT.Core.Domain.Default.Samples.Validations.EntityValidations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BAYSOFT.Middleware.AddServices

@@ -1,10 +1,10 @@
 ﻿using BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data;
-using BAYSOFT.Infrastructures.Data.Contexts;
 using BAYSOFT.Infrastructures.Data.Default;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace BAYSOFT.Middleware.AddServices
 {
@@ -18,7 +18,10 @@ namespace BAYSOFT.Middleware.AddServices
             services.AddDbContext<DefaultDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    sql => sql.MigrationsAssembly(typeof(DefaultDbContext).Assembly.GetName().Name)));
+                    sql => { 
+                        sql.MigrationsAssembly(typeof(DefaultDbContext).Assembly.GetName().Name);
+                        sql.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null); 
+                    }));
 
             return services;
         }

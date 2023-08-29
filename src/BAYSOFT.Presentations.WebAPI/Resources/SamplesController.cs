@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BAYSOFT.Resources
+namespace BAYSOFT.Presentations.WebAPI.Resources
 {
     public class SamplesController : ResourceController
     {

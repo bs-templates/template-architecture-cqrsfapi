@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using BAYSOFT.Core.Domain.Default.Entities;
+using BAYSOFT.Core.Domain.Default.Samples.Entities;
 
 namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
 {
@@ -9,17 +9,18 @@ namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
         public void Configure(EntityTypeBuilder<Sample> builder)
         {
             builder
-                .Property<int>("Id")
+                .Property<int>(p=>p.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnType("int")
                 .UseIdentityColumn();
 
             builder
                 .Property<string>("Description")
+                .IsRequired(true)
                 .HasColumnType("nvarchar(512)");
 
             builder
-                .HasKey("Id");
+                .HasKey(x=>x.Id);
 
             builder
                 .ToTable("Samples");

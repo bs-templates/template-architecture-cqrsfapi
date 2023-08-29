@@ -1,5 +1,5 @@
 ﻿using BAYSOFT.Middleware;
-using BAYSOFT.Resources;
+using BAYSOFT.Presentations.WebAPI.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,4 @@
-﻿using BAYSOFT.Core.Domain.Interfaces.Infrastructures.Data;
+﻿using BAYSOFT.Abstractions.Core.Domain.Interfaces.Infrastructures.Data;
 
 namespace BAYSOFT.Core.Domain.Default.Interfaces.Infrastructures.Data
 {

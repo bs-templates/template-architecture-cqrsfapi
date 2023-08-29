@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BAYSOFT.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Default\Samples\Resources\EntitiesSamples.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntitiesSamples.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\EntitiesDefault.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -23,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Default\Samples\Resources\EntitiesSamples.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EntitiesSamples.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\EntitiesDefault.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EntitiesDefault.Designer.cs</LastGenOutput>
@@ -34,10 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Default\Interfaces\Services\" />
-    <Folder Include="Default\Notifications\" />
-    <Folder Include="Exceptions\" />
+    <Folder Include="Interfaces\Infrastructures\Data\" />
     <Folder Include="Interfaces\Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\baysoft-abstractions\src\BAYSOFT.Abstractions\BAYSOFT.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
