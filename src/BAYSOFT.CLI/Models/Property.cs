@@ -7,6 +7,7 @@ namespace BAYSOFT.CLI.Models
     public class Property : Promptable
     {
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Type { get; set; }
         public string DbName { get; set; }
         public string DbType { get; set; }
@@ -14,7 +15,9 @@ namespace BAYSOFT.CLI.Models
         public bool IsDbGenerated { get; set; }
         public bool IsPrimaryKey { get; set; }
         public bool IsForeignKey { get; set; }
-        public string RelatedEntity { get; set; }
+        public string RelatedEntityName { get; set; }
+        [JsonIgnore]
+        public Entity RelatedEntity { get { return Entity.Context.Entities.Where(e => e.Name == RelatedEntityName).SingleOrDefault(); } }
         [JsonIgnore]
         public Entity Entity { get; set; }
         public Property(Entity entity)
@@ -28,6 +31,8 @@ namespace BAYSOFT.CLI.Models
             AnsiConsole.WriteLine($"[blue]{Entity.Name}[/]");
 
             Name = AnsiConsole.Ask<string>("Enter property name?");
+            
+            DisplayName = AnsiConsole.Ask<string>("Enter property display name?");
 
             Type = AnsiConsole.Ask<string>("Enter property type?");
 
@@ -57,7 +62,7 @@ namespace BAYSOFT.CLI.Models
                             .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                             .AddChoices(Entity.Context.Entities.Select(x=>x.Name)));
 
-                RelatedEntity = selectedRelatedEntity;
+                RelatedEntityName = selectedRelatedEntity;
             }
         }
 

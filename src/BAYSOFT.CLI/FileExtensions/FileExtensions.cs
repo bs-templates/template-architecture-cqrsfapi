@@ -1,6 +1,7 @@
 ﻿using BAYSOFT.CLI.Models;
 using Pluralize.NET.Core;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BAYSOFT.CLI.Templates
 {
@@ -55,46 +56,46 @@ namespace BAYSOFT.Core.Domain.Default.Samples.Entities
                             "\n\t\t",
                             entity.Properties
                                 .Where(x => !x.IsPrimaryKey)
-                                .Select(x => string.Concat($"public {x.Type}{(x.IsNullable ? "?":"")} {x.Name}", " { get; set; }"))
+                                .Select(x => string.Concat($"public {x.Type}{(x.IsNullable ? "?" : "")} {x.Name}", " { get; set; }"))
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        entity.Properties.Where(x => x.IsForeignKey && string.IsNullOrWhiteSpace(x.RelatedEntity)).Any(),
+                        entity.Properties.Where(x => x.IsForeignKey && string.IsNullOrWhiteSpace(x.RelatedEntityName)).Any(),
                         "// TODO: RELATED ENTITIES REFERENCES",
                         $"{string.Join(
                             "\n",
                             entity.Properties
-                                .Where(x => x.IsForeignKey && string.IsNullOrWhiteSpace(x.RelatedEntity))
-                                .Select(x => string.Concat($"using BAYSOFT.Core.Domain.Default.{x.RelatedEntity.Pluralize()}.Entities"))
+                                .Where(x => x.IsForeignKey && string.IsNullOrWhiteSpace(x.RelatedEntityName))
+                                .Select(x => string.Concat($"using BAYSOFT.Core.Domain.Default.{x.RelatedEntityName.Pluralize()}.Entities"))
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity)).Any(),
+                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName)).Any(),
                         "// TODO: RELATED ENTITIES",
                         $"{string.Join(
                             "\n\t\t",
                             entity.Properties
-                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity))
-                                .Select(x => string.Concat($"public virtual {x.RelatedEntity} {x.RelatedEntity}", " { get; set; }"))
+                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName))
+                                .Select(x => string.Concat($"public virtual {x.RelatedEntityName} {x.RelatedEntityName}", " { get; set; }"))
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name))).Any(),
+                        entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name))).Any(),
                         "// TODO: RELATED ENTITIES REFERENCES",
                         $"{string.Join(
                             "\n",
                             entity.Context.Entities
-                                .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name)))
+                                .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name)))
                                 .Select(x => string.Concat($"using BAYSOFT.Core.Domain.Default.{x.Name.Pluralize()}.Entities"))
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name))).Any(),
+                        entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name))).Any(),
                         "// TODO: RELATED COLLECTIONS",
                         $"{string.Join(
                             "\n\t\t",
                             entity.Context.Entities
-                                .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name)))
+                                .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name)))
                                 .Select(x => string.Concat($"public virtual ICollection<{x.Name}> {x.Name.Pluralize()}", " { get; set; }"))
                                 .ToList())}"
                     )
@@ -399,18 +400,18 @@ namespace BAYSOFT.Core.Application.Default.Samples.Commands
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        command.Entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity)).Any()
-                        || command.Entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(command.Entity.Name))).Any(),
+                        command.Entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName)).Any()
+                        || command.Entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(command.Entity.Name))).Any(),
                         "// TODO: SUPPRESSED RESPONSE PROPERTIES",
                         $"{string.Join(
                             "\n\t\t\t",
                             command.Entity.Properties
-                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity))
-                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntity});")
+                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName))
+                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntityName});")
                                 .ToList()
                                 .Union(
                                     command.Entity.Context.Entities
-                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(command.Entity.Name)))
+                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(command.Entity.Name)))
                                         .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.Name.Pluralize()});")
                                         .ToList()))}"
                     )
@@ -710,18 +711,18 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries
                                 .ToList())}"
                     )
                     .ConditionalReplace(
-                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity)).Any()
-                        || entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name))).Any(),
+                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName)).Any()
+                        || entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name))).Any(),
                         "// TODO: SUPPRESSED RESPONSE PROPERTIES",
                         $"{string.Join(
                             "\n\t\t\t",
                             entity.Properties
-                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity))
-                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntity});")
+                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName))
+                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntityName});")
                                 .ToList()
                                 .Union(
                                     entity.Context.Entities
-                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name)))
+                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name)))
                                         .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.Name.Pluralize()});")
                                         .ToList()))}"
                     )
@@ -913,18 +914,18 @@ namespace BAYSOFT.Core.Application.Default.Samples.Queries
                             entity.Properties.Where(p => p.IsPrimaryKey).Select(p => $"ConfigKeys(x => x.{p.Name});"))}"
                     )
                     .ConditionalReplace(
-                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity)).Any()
-                        || entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name))).Any(),
+                        entity.Properties.Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName)).Any()
+                        || entity.Context.Entities.Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name))).Any(),
                         "// TODO: SUPPRESSED RESPONSE PROPERTIES",
                         $"{string.Join(
                             "\n\t\t\t",
                             entity.Properties
-                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntity))
-                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntity});")
+                                .Where(x => x.IsForeignKey && !string.IsNullOrWhiteSpace(x.RelatedEntityName))
+                                .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.RelatedEntityName});")
                                 .ToList()
                                 .Union(
                                     entity.Context.Entities
-                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity) && property.RelatedEntity.Equals(entity.Name)))
+                                        .Where(x => x.Properties.Any(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName) && property.RelatedEntityName.Equals(entity.Name)))
                                         .Select(x => $"ConfigSuppressedResponseProperties(x => x.{x.Name.Pluralize()});")
                                         .ToList()))}"
                     )
@@ -1270,6 +1271,8 @@ namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
                     .Replace("BAYSOFT.Infrastructures", $"{entity.Context.Project.Name}.Infrastructures")
                     .Replace("BAYSOFT.Core", $"{entity.Context.Project.Name}.Core")
                     .Replace("Default", entity.Context.Name)
+                    .Replace("Samples", entity.Name.Pluralize())
+                    .Replace("Sample", entity.Name)
                     .ConditionalReplace(
                         entity.Properties.Where(property => property.IsPrimaryKey).Any(),
                         "// TODO: MAP KEYS PROPERTIES",
@@ -1278,7 +1281,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
                                 : string.Join(
                                     "\n\t\t\t",
                                     entity.Properties.Where(property => property.IsPrimaryKey)
-                                        .Select(property => $"builder\r\n\t\t\t\t.Property<{property.Type}{(property.IsNullable ? "?":"")}>(p => p.{property.Name}\")\r\n\t\t\t\t.HasColumnType(\"{property.DbType})\r\n\t\t\t\t.HasColumnName(\"{property.DbName}\")\r\n\t\t\t\t.IsRequired({(property.IsNullable ? "false": "true")});")
+                                        .Select(property => $"builder\r\n\t\t\t\t.Property<{property.Type}{(property.IsNullable ? "?" : "")}>(p => p.{property.Name})\r\n\t\t\t\t.HasColumnType(\"{property.DbType})\r\n\t\t\t\t.HasColumnName(\"{property.DbName}\")\r\n\t\t\t\t.IsRequired({(property.IsNullable ? "false" : "true")});")
                                         .Order()
                                         .ToList()
                                 )
@@ -1290,7 +1293,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
                         $"{string.Join(
                             "\n\n\t\t\t",
                             entity.Properties.Where(property => !property.IsPrimaryKey)
-                                .Select(property => $"builder\r\n\t\t\t\t.Property<{property.Type}{(property.IsNullable ? "?" : "")}>(p => p.{property.Name}\")\r\n\t\t\t\t.HasColumnType(\"{property.DbType})\r\n\t\t\t\t.HasColumnName(\"{property.DbName}\")\r\n\t\t\t\t.IsRequired({(property.IsNullable ? "false" : "true")});")
+                                .Select(property => $"builder\r\n\t\t\t\t.Property<{property.Type}{(property.IsNullable ? "?" : "")}>(p => p.{property.Name})\r\n\t\t\t\t.HasColumnType(\"{property.DbType})\r\n\t\t\t\t.HasColumnName(\"{property.DbName}\")\r\n\t\t\t\t.IsRequired({(property.IsNullable ? "false" : "true")});")
                                 .Order()
                                 .ToList()
                         )}"
@@ -1308,12 +1311,12 @@ namespace BAYSOFT.Infrastructures.Data.Default.EntityMappings
                     )
                     .Replace("// TODO: MAP TABLE", $"builder\r\n\t\t\t\t.ToTable(\"{entity.Name.Pluralize()}\");")
                     .ConditionalReplace(
-                        entity.Properties.Where(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity)).Any(),
+                        entity.Properties.Where(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName)).Any(),
                         "// TODO: MAP RELATIONS",
                         $"{string.Join(
                             "\n\t\t\t",
-                            entity.Properties.Where(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntity))
-                                .Select(property => $"builder\r\n\t\t\t\t.HasOne(x => x.{property.RelatedEntity})\r\n\t\t\t\t.WithMany(x => x.{property.Entity.Name.Pluralize()})\r\n\t\t\t\t.HasForeignKey(x => x.{property.Name});")
+                            entity.Properties.Where(property => property.IsForeignKey && !string.IsNullOrWhiteSpace(property.RelatedEntityName))
+                                .Select(property => $"builder\r\n\t\t\t\t.HasOne(x => x.{property.RelatedEntityName})\r\n\t\t\t\t.WithMany(x => x.{property.Entity.Name.Pluralize()})\r\n\t\t\t\t.HasForeignKey(x => x.{property.Name});")
                                 .Order()
                                 .ToList()
                         )}"
@@ -1806,8 +1809,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.Migrations
                             "\n\n\t\t\t",
                             context.Entities
                                 .Select(entity => entity.GenerateMigrationUP())
-                                .ToList())
-                        }")
+                                .ToList())}")
                     .ConditionalReplace(
                         context.Entities.Any(),
                         "// TODO: DOWNS",
@@ -1815,8 +1817,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.Migrations
                             "\n\n\t\t\t",
                             context.Entities
                                 .Select(entity => entity.GenerateMigrationDOWN())
-                                .ToList())
-                        }")
+                                .ToList())}")
             );
         }
         public static string GenerateMigrationUP(this Entity entity)
@@ -1824,7 +1825,7 @@ namespace BAYSOFT.Infrastructures.Data.Default.Migrations
             var columns = $"{string.Join(",\n\t\t\t\t\t", entity.Properties.Select(property => property.GenerateMigration()).ToList())}";
             var constraintsPK = $"\n\t\t\t\t\ttable.PrimaryKey(\"PK_{entity.Name.Pluralize()}\");";
             var constraintsFK = entity.Properties.Where(property => property.IsForeignKey).Any()
-                ? $"\n\t\t\t\t\t{string.Join("\"\\n\\t\\t\\t\\t\\t\\t", entity.Properties.Where(property => property.IsForeignKey).Select(property => $"table.ForeignKey(\"FK_{property.Entity.Name.Pluralize()}_TO_{property.RelatedEntity.Pluralize()}\", x => x.{property.Name}, \"{property.RelatedEntity.Pluralize()}\", \"{property.Entity.Context.Entities.Where(e => e.Name == property.RelatedEntity).SingleOrDefault().Properties.Where(p => p.IsPrimaryKey).FirstOrDefault().DbName}\");").ToList())}\");"
+                ? $"\n\t\t\t\t\t{string.Join("\"\\n\\t\\t\\t\\t\\t\\t", entity.Properties.Where(property => property.IsForeignKey).Select(property => $"table.ForeignKey(\"FK_{property.Entity.Name.Pluralize()}_TO_{property.RelatedEntityName.Pluralize()}\", x => x.{property.Name}, \"{property.RelatedEntityName.Pluralize()}\", \"{property.Entity.Context.Entities.Where(e => e.Name == property.RelatedEntityName).SingleOrDefault().Properties.Where(p => p.IsPrimaryKey).FirstOrDefault().DbName}\");").ToList())}\");"
                 : "";
             return $"migrationBuilder.CreateTable(\r\n\t\t\t\tname: \"{entity.Name.Pluralize()}\",\r\n\t\t\t\tcolumns: table => new\r\n\t\t\t\t{{\r\n\t\t\t\t\t{columns}\r\n\t\t\t\t}},\r\n\t\t\t\tcolumns: table => new\r\n\t\t\t\t{{{constraintsPK}{constraintsFK}\r\n\t\t\t\t}});";
         }
@@ -1891,14 +1892,14 @@ namespace BAYSOFT.Infrastructures.Data.Default.Migrations
         {
             var properties = $"{string.Join("\n\n\t\t\t\t", entity.Properties.Select(p => p.GenerateSnapshot()).ToList())}";
             var keys = $"\n\n\t\t\t\tb.HasKey(\"{string.Join(", ", entity.Properties.Where(p => p.IsPrimaryKey).Select(p => p.Name).ToList())}\");";
-            var relationships = entity.Properties.Where(p => p.IsForeignKey).Any() ? $"\n\n\t\t\t\t{string.Join("\n\t\t\t\t", entity.Properties.Where(p => p.IsForeignKey).Select(p => $"b.HasOne(\"{p.RelatedEntity}\")\n\t\t\t\t\t.WithMany(\"{p.Entity.Name.Pluralize()}\")\n\t\t\t\t\t.HasForeignKey(\"{string.Join(", ",p.Entity.Context.Entities.Where(e=>e.Name == p.RelatedEntity).SingleOrDefault().Properties.Where(prop => prop.IsPrimaryKey).Select(key => key.Name).ToList())}\");").ToList())}" : "";
+            var relationships = entity.Properties.Where(p => p.IsForeignKey).Any() ? $"\n\n\t\t\t\t{string.Join("\n\t\t\t\t", entity.Properties.Where(p => p.IsForeignKey).Select(p => $"b.HasOne(\"{p.RelatedEntityName}\")\n\t\t\t\t\t.WithMany(\"{p.Entity.Name.Pluralize()}\")\n\t\t\t\t\t.HasForeignKey(\"{string.Join(", ", p.Entity.Context.Entities.Where(e => e.Name == p.RelatedEntityName).SingleOrDefault().Properties.Where(prop => prop.IsPrimaryKey).Select(key => key.Name).ToList())}\");").ToList())}" : "";
             var table = $"\n\n\t\t\t\tb.ToTable(\"{entity.Name.Pluralize()}\",\"{entity.Context.Schema}\");";
 
             return $"modelBuilder.Entity(\"BAYSOFT.Core.Domain.Default.Samples.Entities\", b => \n\t\t\t{{\n\t\t\t\t{properties}{keys}{relationships}{table}\n\t\t\t}});";
         }
         public static string GenerateSnapshot(this Property property)
         {
-            return $"b.Property<{property.Type}{(property.IsNullable ? "?":"")}>(\"{property.Name}\")\r\n\t\t\t\t\t.HasColumnType(\"{property.DbType}\")\r\n\t\t\t\t\t.HasColumnName(\"{property.DbName}\"){(property.IsDbGenerated ? ".ValueGeneratedOnAdd()":"")};{(property.IsDbGenerated ? $"\r\n\r\n\t\t\t\tSqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<{property.Type}{(property.IsNullable?"?":"")}>(\"{property.Name}\"));":"")}";
+            return $"b.Property<{property.Type}{(property.IsNullable ? "?" : "")}>(\"{property.Name}\")\r\n\t\t\t\t\t.HasColumnType(\"{property.DbType}\")\r\n\t\t\t\t\t.HasColumnName(\"{property.DbName}\"){(property.IsDbGenerated ? ".ValueGeneratedOnAdd()" : "")};{(property.IsDbGenerated ? $"\r\n\r\n\t\t\t\tSqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<{property.Type}{(property.IsNullable ? "?" : "")}>(\"{property.Name}\"));" : "")}";
         }
         public static void GenerateAddDbContextConfigurations(this Project project)
         {
@@ -2106,16 +2107,16 @@ namespace BAYSOFT.Middleware.AddServices
         }
         public static void GenerateControllerFile(this Entity entity)
         {
-            var path = @$"src\{entity.Context.Project.Name}.Presentations.WebAPI\Resources";
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.API\Resources";
             var filePath = Path.Combine(path, $"{entity.Name.Pluralize()}Controller.cs");
             var source = @"using BAYSOFT.Core.Application.Default.Samples.Commands;
 using BAYSOFT.Core.Application.Default.Samples.Queries;
-using BAYSOFT.Presentations.WebAPI.Abstractions.Controllers;
+using BAYSOFT.Presentations.Web.API.Abstractions.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BAYSOFT.Presentations.WebAPI.Resources
+namespace BAYSOFT.Presentations.Web.API.Resources
 {
     public class SamplesController : ResourceController
     {
@@ -2123,8 +2124,7 @@ namespace BAYSOFT.Presentations.WebAPI.Resources
         // TODO: QUERY GETBYID
         // TODO: COMMAND ACTIONS
     }
-}
-";
+}";
 
             Directory.CreateDirectory(path);
             File.WriteAllText(
@@ -2150,14 +2150,681 @@ namespace BAYSOFT.Presentations.WebAPI.Resources
                         $"{string.Join(
                             "\r\n\r\n\t\t",
                             entity.Commands
-                                .Select(c => $"[Http{c.HttpMethod}{(!c.HttpMethod.Equals("Post") ? $"(\"{{{entity.Properties.Where(x=>x.IsPrimaryKey).SingleOrDefault().Name.ToCamelCase()}:{entity.Properties.Where(x => x.IsPrimaryKey).SingleOrDefault().Type}}}\")" : "")}]\r\n\t\tpublic async Task<ActionResult<{c.Name}CommandResponse>> {c.HttpMethod}({c.Name}Command request, CancellationToken cancellationToken = default(CancellationToken))\r\n\t\t{{\r\n\t\t\treturn await Send(request, cancellationToken);\r\n\t\t}}")
+                                .Select(c => $"[Http{c.HttpMethod}{(!c.HttpMethod.Equals("Post") ? $"(\"{{{entity.Properties.Where(x => x.IsPrimaryKey).SingleOrDefault().Name.ToCamelCase()}:{entity.Properties.Where(x => x.IsPrimaryKey).SingleOrDefault().Type}}}\")" : "")}]\r\n\t\tpublic async Task<ActionResult<{c.Name}CommandResponse>> {c.HttpMethod}({c.Name}Command request, CancellationToken cancellationToken = default(CancellationToken))\r\n\t\t{{\r\n\t\t\treturn await Send(request, cancellationToken);\r\n\t\t}}")
                                 .ToList())}"
+                    )
+            );
+        }
+        public static void GenerateReactFormFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\organisms";
+            var filePath = Path.Combine(path, $"Form{entity.Name}.js");
+            var source = @"import React, { useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { push } from 'connected-react-router';
+
+import { FormControl, TextField, Button, Grid } from '@mui/material';
+
+import { styled } from '@mui/material/styles';
+
+import {
+    ApplicationDialogShow, ApplicationDialogClose, ApplicationDialogAddAction
+} from '../../state/actions/application/actions';
+import { CreateApiService } from '../../state/actions/apiModelWrapper/actions';
+import { ServerUrl } from '../atoms/ServerUrlHelper';
+
+const StyledRootGrid = styled(Grid)(({ theme }) => ({
+    ...theme.typography.body2,
+    display: 'flex',
+    flexWrap: 'wrap',
+}));
+
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1)
+}));
+
+
+// TODO: AGGREGATE COLLECTIONS
+const COLLECTION = ""samples"";
+
+const FormComponent = (props) => {
+    const { parentComponentId, id, /* TODO: AGGREDATE IDS */params } = props;
+    const COMPONENT_ID = `${parentComponentId}-${COLLECTION}-form`;
+    const endPoint = ServerUrl(`api/${COLLECTION}`);
+    // TODO: AGGREGATE URLS
+    const returnUrl = `/${COLLECTION}`;
+    const { entities, posts, puts } = props;
+    const [requestUrl, setRequestUrl] = useState('');
+    const [validations, setValidations] = useState([]);
+    const [updatedEntity, setUpdatedEntity] = useState({ description: '' });
+    const [dbEntity, setDbEntity] = useState(null);
+    const api = props.CreateApiService(`${COMPONENT_ID}-service`, endPoint);
+
+    const handleChange = (prop) => (event) => {
+        setUpdatedEntity({ ...updatedEntity, [prop]: event.target.value });
+    };
+    const handleClickSave = () => {
+        setValidations(null);
+        console.log({ updatedEntity });
+        if (id) {
+            api.Put(id, updatedEntity, returnUrl);
+        } else {
+            api.Post(updatedEntity, returnUrl);
+        }
+    };
+    useEffect(() => {
+        if (id) {
+            setRequestUrl(api.GetById(id));
+        }
+    }, [api, id, params]);
+    useEffect(() => {
+        if (id && entities && entities[requestUrl] && entities[requestUrl].response && entities[requestUrl].response.data !== dbEntity) {
+            setDbEntity(entities[requestUrl].response.data);
+            setUpdatedEntity(entities[requestUrl].response.data);
+        }
+    }, [id, entities, requestUrl, dbEntity, setDbEntity, setUpdatedEntity]);
+    useEffect(() => {
+        if (posts && posts[requestUrl] && posts[requestUrl].entityValidations && posts[requestUrl].entityValidations) {
+            setValidations(posts[requestUrl].entityValidations);
+        }
+    }, [posts, requestUrl]);
+    useEffect(() => {
+        if (puts && puts[requestUrl] && puts[requestUrl].entityValidations && puts[requestUrl].entityValidations) {
+            setValidations(puts[requestUrl].entityValidations);
+        }
+    }, [puts, requestUrl]);
+    return (
+        <StyledRootGrid container spacing={0}>
+            {/* TODO: AGGREGATE FIELDS */}
+
+            {/* TODO: PROPERTY FIELDS */}
+
+            <Grid container spacing={0} justifyContent=""flex-end"" >
+                <Grid item lg={2} md={4} xs={6}>
+                    <StyledFormControl fullWidth >
+                        <Button variant=""contained"" color=""primary"" onClick={handleClickSave}>Save</Button>
+                    </StyledFormControl>
+                </Grid>
+            </Grid>
+        </StyledRootGrid>
+    );
+};
+
+const mapStateToProps = store => ({
+    application: store.ApplicationState.application,
+    entities: store.ApiModelWrapperState.queries.entities,
+    puts: store.ApiModelWrapperState.commands.puts
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    push,
+    CreateApiService,
+    ApplicationDialogShow,
+    ApplicationDialogClose,
+    ApplicationDialogAddAction
+}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(FormComponent);
+
+export default connectedComponent;";
+
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).Any(),
+                        "// TODO: AGGREGATE COLLECTIONS",
+                        $"{string.Join(
+                            "\n",
+                            entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey)
+                                .Select(p => $"const AGGREGATE_COLLECTION_{p.RelatedEntityName.Pluralize().ToUpper()} = \"{p.RelatedEntityName.Pluralize().ToCamelCase()}\";")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).Any(),
+                        "/* TODO: AGGREDATE IDS */",
+                        $"{string.Join(
+                            "",
+                            entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey)
+                                .Select(p => $"aggregate{p.Name}, ")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).Any(),
+                        "// TODO: AGGREGATE URLS",
+                        $"{string.Join(
+                            "\n\t",
+                            entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey)
+                                .Select(p => $"const {p.RelatedEntityName.Pluralize().ToCamelCase()}AggregateEndPoint = ServerUrl(`api/${{AGGREGATE_COLLECTION_{p.RelatedEntityName.Pluralize().ToUpper()}}}`);")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).Any(),
+                        "`/${COLLECTION}`",
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).GenerateReactAggergateUrl()
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey).Any(),
+                        "{/* TODO: AGGREGATE FIELDS */}",
+                        $"{string.Join(
+
+                            "\n\n\t\t\t",
+                            entity.Properties.Where(p => !p.IsPrimaryKey && p.IsForeignKey)
+                                .Select(p => $"<Grid container spacing={{0}} >\r\n\t\t\t\t<Grid item xs={{12}}>\r\n\t\t\t\t\t<StyledFormControl fullWidth>\r\n\t\t\t\t\t\t<ApiConnectedAutocomplete\r\n\t\t\t\t\t\t\terror={{validations && validations.{p.Name.ToCamelCase()} && validations.{p.Name.ToCamelCase()}.length > 0}}\r\n\t\t\t\t\t\t\thelperText={{validations && validations.{p.Name.ToCamelCase()} ? validations.{p.Name.ToCamelCase()}.join(' ') : ''}}\r\n\t\t\t\t\t\t\tid='{p.Name.ToCamelCase()}' connectedId={{COMPONENT_ID}}\r\n\t\t\t\t\t\t\tlabel=\"{p.DisplayName}\" optionValue=\"id\" optionText=\"email\" defaultText=\"Selecione...\"\r\n\t\t\t\t\t\t\tdisabled={{aggregate{p.Name} ? true : false}} endPoint={{{p.RelatedEntityName.Pluralize().ToCamelCase()}AggregateEndPoint}}\r\n\t\t\t\t\t\t\tvalue={{updatedEntity?.{p.Name.ToCamelCase()} || ''}} onChange={{handleAutocompleteChange('{p.Name.ToCamelCase()}')}}\r\n\t\t\t\t\t\t/>\r\n\t\t\t\t\t</StyledFormControl>\r\n\t\t\t\t</Grid>\r\n\t\t\t</Grid>")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey && !p.IsForeignKey).Any(),
+                        "{/* TODO: PROPERTY FIELDS */}",
+                        $"{string.Join(
+                            "\n\n\t\t\t",
+                            entity.Properties.Where(p => !p.IsPrimaryKey && !p.IsForeignKey)
+                                .Select(p => $"<Grid container spacing={{0}} >\r\n\t\t\t\t<Grid item xs={{12}}>\r\n\t\t\t\t\t<StyledFormControl fullWidth >\r\n\t\t\t\t\t\t<TextField\r\n\t\t\t\t\t\t\terror={{validations && validations.{p.Name.ToCamelCase()} && validations.{p.Name.ToCamelCase()}.length > 0}}\r\n\t\t\t\t\t\t\thelperText={{validations && validations.{p.Name.ToCamelCase()} ? validations.{p.Name.ToCamelCase()}.join(' ') : ''}}\r\n\t\t\t\t\t\t\tkey=\"{p.Name.ToCamelCase()}\" id=\"{p.Name.ToCamelCase()}\" label=\"{p.DisplayName}\" variant=\"outlined\"\r\n\t\t\t\t\t\t\tvalue={{updatedEntity.{p.Name.ToCamelCase()} || ''}} onChange={{handleChange('{p.Name.ToCamelCase()}')}} />\r\n\t\t\t\t\t</StyledFormControl>\r\n\t\t\t\t</Grid>\r\n\t\t\t</Grid>")
+                                .ToList()
+                        )}"
+                    )
+            );
+        }
+        public static void GenerateReactTableFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\organisms";
+            var filePath = Path.Combine(path, $"Table{entity.Name.Pluralize()}.js");
+            var source = @"import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
+
+import ApiConnectedTable from './ApiConnectedTable';
+
+import { ApplicationDialogShow, ApplicationDialogClose, ApplicationDialogAddAction } from '../../state/actions/application/actions';
+import { CreateApiService } from '../../state/actions/apiModelWrapper/actions';
+import { CheckAccess } from '../../state/actions/signInManager/actions';
+import { ServerUrl } from '../atoms/ServerUrlHelper';
+
+const COLLECTION = ""samples"";
+const AccessFunctionAdd = (dispatch, state) => CheckAccess(COLLECTION, ""CREATE"", null, true, false, null)(dispatch, state);
+const AccessFunctionEdit = (dispatch, state) => CheckAccess(COLLECTION, ""EDIT"", null, true, false, null)(dispatch, state);
+const AccessFunctionDelete = (dispatch, state) => CheckAccess(COLLECTION, ""DELETE"", null, true, false, null)(dispatch, state);
+
+const TableComponent = (props) => {
+    const { parentComponentId } = props;
+    const COMPONENT_ID = `${parentComponentId}-${COLLECTION}-table`;
+    const api = props.CreateApiService(`${COMPONENT_ID}-service`, ServerUrl(`api/${COLLECTION}`));
+    const config = {
+        elevation: props.elevation||1,
+        title: 'List of samples',
+        configId: COMPONENT_ID,
+        endPoint: ServerUrl(`api/${COLLECTION}`),
+        id: 'id',
+        dense: false,
+        defaultPageSize: 5,
+        columns: [/* TODO: COLUMNS */],
+        actions: {
+            'add': { access: AccessFunctionAdd, handler: () => { addHandler(); } },
+            'edit': { access: AccessFunctionEdit, handler: (id) => { editHandler(id); } },
+            'delete': { access: AccessFunctionDelete, handler: (ids, callback) => { deleteHandler(ids, callback); } },
+            //'filter': { component: null }
+        }
+    };
+    const deleteHandler = (ids, callback) => {
+        let actions = [];
+        console.log(props.ApplicationDialogAddAction);
+        actions.push(props.ApplicationDialogAddAction('Cancel', 'outlined', 'error', () => { props.ApplicationDialogClose(); }));
+        actions.push(props.ApplicationDialogAddAction('Delete', 'contained', 'error', () => { ids.map(id => api.Delete(id)); props.ApplicationDialogClose(); callback(); }));
+
+        props.ApplicationDialogShow('Confirm', 'Do you want to confirm the delete action?', actions);
+    };
+    const addHandler = () => {
+        props.push(`/${COLLECTION}/create`);
+    };
+    const editHandler = (id) => {
+        props.push(`/${COLLECTION}/${id}`);
+    };
+    return (<ApiConnectedTable config={config} />);
+};
+
+const mapStateToProps = store => ({
+    application: store.ApplicationState.application
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    push,
+    CreateApiService,
+    ApplicationDialogShow,
+    ApplicationDialogClose,
+    ApplicationDialogAddAction
+}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(TableComponent);
+
+export default connectedComponent;";
+
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => p.IsPrimaryKey).Any(),
+                        "id: 'id',",
+                        $"id: '{entity.Properties.Where(p => p.IsPrimaryKey).SingleOrDefault().Name.ToCamelCase()}',"
+                    )
+                    .ConditionalReplace(
+                        entity.Properties.Where(p => !p.IsPrimaryKey).Any(),
+                        "/* TODO: COLUMNS */",
+                        $"{string.Join(
+                            ", ",
+                            entity.Properties.Where(p => !p.IsPrimaryKey)
+                                .Select(p => $"{{\r\n\t\t\tid: '{p.Name.ToCamelCase()}',\r\n\t\t\tdisablePadding: false,\r\n\t\t\tlabel: '{p.DisplayName}'\r\n\t\t}}")
+                                .ToList()
+                        )}"
+                    )
+            );
+        }
+        public static void GenerateReactTabsFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\organisms";
+            var filePath = Path.Combine(path, $"Tabs{entity.Name.Pluralize()}.js");
+            var source = @"import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { push } from 'connected-react-router';
+
+import { Grid, AppBar, Tabs, Tab, Box } from '@mui/material';
+
+import { /* TODO: TABLE REFERENCES */ } from '.';
+
+import { styled } from '@mui/material/styles';
+
+const StyledTabUserRoot = styled(Grid)(({theme})=>({
+    display: 'flex',
+    flexWrap: 'wrap',
+}));
+
+const StyledTabsRoot = styled('div')(({theme})=>({
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+}));
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role=""tabpanel""
+            hidden={value !== index}
+            id={`scrollable-force-tabpanel-${index}`}
+            aria-labelledby={`scrollable-force-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box>{children}</Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+}
+
+function a11yProps(index) {
+    return {
+        id: `scrollable-force-tab-${index}`,
+        'aria-controls': `scrollable-force-tabpanel-${index}`,
+    };
+}
+
+const TabsComponent = (props) => {
+    const { parentComponentId, id } = props;
+    const COMPONENT_ID = `${parentComponentId}-tabs`;
+    const [tabIndex, setTabIndex] = React.useState(0);
+
+    const handleChangeTab = (event, index) => {
+        setTabIndex(index);
+    };
+
+    return (
+        <StyledTabUserRoot container spacing={0}>
+            {
+                id ?
+                    (
+                        <Grid container spacing={0} >
+                            <Grid item xs={12}>
+                                <StyledTabsRoot>
+                                    <AppBar position=""static"" color=""default"" elevation={0}>
+                                        <Tabs scrollButtons allowScrollButtonsMobile
+                                            indicatorColor=""primary"" textColor=""primary"" variant={""scrollable""} aria-label=""scrollable force tabs example""
+                                            value={tabIndex} onChange={handleChangeTab}>
+                                            {/*TODO: TABLABEL*/}
+                                        </Tabs>
+                                    </AppBar>
+                                    {/*TODO: TABPANEL*/}
+                                </StyledTabsRoot>
+                            </Grid>
+                        </Grid>
+                    )
+                    : null
+            }
+        </StyledTabUserRoot>
+    );
+};
+
+const mapStateToProps = store => ({
+    application: store.ApplicationState.application,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    push,
+}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(TabsComponent);
+
+export default connectedComponent;";
+            int indexTab = 0;
+            int indexTable = 0;
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+                    .ConditionalReplace(
+                        entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name).Any(),
+                        "/* TODO: TABLE REFERENCES */",
+                        $"{string.Join(
+                            ", ",
+                            entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name)
+                                .Select(relatedEntity => $"Table{relatedEntity.Pluralize()}")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name).Any(),
+                        "{/*TODO: TABLABEL*/}",
+                        $"{string.Join(
+                            "\n\t\t\t\t\t\t\t\t\t\t\t",
+                            entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name)
+                                .Select(relatedEntity => $"<Tab label=\"{relatedEntity.Pluralize()}\" {{...a11yProps({indexTab++})}} />")
+                                .ToList()
+                        )}"
+                    )
+                    .ConditionalReplace(
+                        entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name).Any(),
+                        "{/*TODO: TABPANEL*/}",
+                        $"{string.Join(
+                            "\n\t\t\t\t\t\t\t\t\t",
+                            entity.Context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).ToList().Where(re => re == entity.Name)
+                                .Select(relatedEntity => $"<TabPanel value={{tabIndex}} index={{{indexTable++}}}><Table{relatedEntity.Pluralize()} parentComponentId={{COMPONENT_ID}} aggregateId={{id}} /></TabPanel>")
+                                .ToList()
+                        )}"
+                    )
+            );
+        }
+        public static void GenerateReactPageIndexFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\pages\{entity.Name.Pluralize().ToCamelCase()}";
+            var filePath = Path.Combine(path, $"PageIndex.js");
+            var source = @"import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { Page } from '../../molecules';
+import { TableSamples } from '../../organisms';
+
+import { CheckAccess } from '../../../state/actions/signInManager/actions';
+
+const COLLECTION = ""samples"";
+const ACTION = ""INDEX"";
+
+const PageIndex = (props) => {
+    const COMPONENT_ID = `${COLLECTION}-${ACTION.toLowerCase()}`;
+    return (
+        <Page>
+            <TableSamples parentComponentId={COMPONENT_ID} elevation={0} />
+        </Page>
+    );
+}
+
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(PageIndex);
+
+const AccessFunction = (dispatch, state) => CheckAccess(COLLECTION, ACTION.toUpperCase(), null, true, false, null)(dispatch, state);
+
+export const routes = [
+    { access: AccessFunction, name: `${COLLECTION.toUpperCase()}`, path: `/${COLLECTION}`, params: [], component: connectedComponent },
+    { access: AccessFunction, name: `${COLLECTION.toUpperCase()}_${ACTION.toUpperCase()}`, path: `/${COLLECTION}/${ACTION.toLowerCase()}`, params: [], component: connectedComponent }
+];
+
+export default connectedComponent;";
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("Samples", entity.Name.Pluralize())
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+            );
+        }
+        public static void GenerateReactPageCreateFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\pages\{entity.Name.Pluralize().ToCamelCase()}";
+            var filePath = Path.Combine(path, $"PageCreate.js");
+            var source = @"import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { Page } from '../../molecules';
+import { FormSample } from '../../organisms';
+
+import { CheckAccess } from '../../../state/actions/signInManager/actions';
+
+const COLLECTION = ""samples"";
+const ACTION = ""Create"";
+
+const PageCreate = (props) => {
+    const COMPONENT_ID = `${COLLECTION}-${ACTION.toLowerCase()}`;
+    const title = `${ACTION} new sample`;
+    const returnUrl = `/${COLLECTION}`;
+    return (
+        <Page title={title} returnUrl={returnUrl}>
+            <FormSample parentComponentId={COMPONENT_ID} />
+        </Page>
+    );
+};
+
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(PageCreate);
+
+const AccessFunction = (dispatch, state) => CheckAccess(COLLECTION, ACTION.toUpperCase(), null, true, false, null)(dispatch, state);
+
+export const routes = [
+    { access: AccessFunction, name: `${COLLECTION.toUpperCase()}_${ACTION.toUpperCase()}`, path: `/${COLLECTION}/${ACTION.toLowerCase()}`, params: [], component: connectedComponent },
+];
+
+export default connectedComponent;";
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("Samples", entity.Name.Pluralize())
+                    .Replace("Sample", entity.Name)
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+            );
+        }
+        public static void GenerateReactPageEditFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\pages\{entity.Name.Pluralize().ToCamelCase()}";
+            var filePath = Path.Combine(path, $"PageEdit.js");
+            var source = @"import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { Page } from '../../molecules';
+import { FormSample } from '../../organisms';
+
+import { CheckAccess } from '../../../state/actions/signInManager/actions';
+
+const COLLECTION = ""samples"";
+const ACTION = ""Edit"";
+
+const PageEdit = (props) => {
+    const { id } = props.match.params;
+    const COMPONENT_ID = `${COLLECTION}-${ACTION.toLowerCase()}`;
+    const title = `${ACTION} sample`;
+    const returnUrl = `/${COLLECTION}`;
+    return (
+        <Page title={title} returnUrl={returnUrl}>
+            <FormSample parentComponentId={COMPONENT_ID} id={id} params={null} />
+        </Page>
+    );
+};
+
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(PageEdit);
+
+const AccessFunction = (dispatch, state) => CheckAccess(COLLECTION, ACTION.toUpperCase(), null, true, false, null)(dispatch, state);
+
+export const routes = [
+    { access: AccessFunction, name: `${COLLECTION.toUpperCase()}_${ACTION.toUpperCase()}`, path: `/${COLLECTION}/:id`, params: ['id'], component: connectedComponent },
+];
+
+export default connectedComponent;";
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .Replace("Samples", entity.Name.Pluralize())
+                    .Replace("Sample", entity.Name)
+                    .Replace("samples", entity.Name.Pluralize().ToCamelCase())
+                    .Replace("sample", entity.Name.ToCamelCase())
+            );
+        }
+        public static void GenerateReactPagesIndexFile(this Entity entity)
+        {
+            var path = @$"src\{entity.Context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\pages\{entity.Name.Pluralize().ToCamelCase()}";
+            var filePath = Path.Combine(path, $"index.js");
+            var source = @"import PageIndex, { routes as RouteIndex } from './PageIndex';
+import PageCreate, { routes as RouteCreate } from './PageCreate';
+import PageEdit, { routes as RouteEdit } from './PageEdit';
+
+const index = {
+    routes: [
+        ...RouteIndex,
+        ...RouteCreate,
+        ...RouteEdit
+    ],
+    pages: {
+        Index: PageIndex,
+        Create: PageCreate,
+        Edit: PageEdit
+    }
+};
+
+export default index;";
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+            );
+        }
+        public static void GenerateReactOrganismsIndexFile(this Context context)
+        {
+            var path = @$"src\{context.Project.Name}.Presentations.Web.SPA.ReactJS\client-app\src\components\organisms";
+            var filePath = Path.Combine(path, $"index.js");
+            var source = @"import ApiConnectedTable from './ApiConnectedTable';
+import ApiConnectedAutocomplete from './ApiConnectedAutocomplete';
+
+// TODO: IMPORT FORMS
+
+// TODO: IMPORT TABLES
+
+// TODO: IMPORT TABS
+
+export {
+    ApiConnectedTable, 
+    ApiConnectedAutocomplete,
+    // TODO: EXPORT FORMS
+    // TODO: EXPORT TABLES
+    // TODO: EXPORT TABS
+};";
+            Directory.CreateDirectory(path);
+            File.WriteAllText(
+                filePath,
+                source
+                    .ConditionalReplace(
+                        context.Entities.Any(),
+                        "// TODO: IMPORT FORMS",
+                        $"{string.Join("\n", context.Entities.Select(e => $"import Form{e.Name} from './Form{e.Name}';").ToList())}"
+                    )
+                    .ConditionalReplace(
+                        context.Entities.Any(),
+                        "// TODO: IMPORT TABLES",
+                        $"{string.Join("\n", context.Entities.Select(e => $"import Table{e.Name.Pluralize()} from './Table{e.Name.Pluralize()}';").ToList())}"
+                    )
+                    .ConditionalReplace(
+                        context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).Any(),
+                        "// TODO: IMPORT TABS",
+                        $"{string.Join("\n", context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName).Distinct().Select(relatedEntity => $"import Tabs{relatedEntity} from './Tabs{relatedEntity}';")))}"
+                    )
+                    .ConditionalReplace(
+                        context.Entities.Any(),
+                        "// TODO: EXPORT FORMS",
+                        $"{string.Join("\n\t", context.Entities.Select(e => $"Form{e.Name},").ToList())}"
+                    )
+                    .ConditionalReplace(
+                        context.Entities.Any(),
+                        "// TODO: EXPORT TABLES",
+                        $"{string.Join("\n\t", context.Entities.Select(e => $"Table{e.Name.Pluralize()},").ToList())}"
+                    )
+                    .ConditionalReplace(
+                        context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName)).Any(),
+                        "// TODO: EXPORT TABS",
+                        $"{string.Join("\n\t", context.Entities.SelectMany(e => e.Properties.Where(p => p.IsForeignKey).Select(p => p.RelatedEntityName).Distinct().Select(relatedEntity => $"Tabs{relatedEntity},")))}"
                     )
             );
         }
         public static string GenerateRule(this EntityRule rule)
         {
             return $"RuleFor(x => x.{rule.Property.Name}).{rule.Rule}.WithMessage(\"{rule.Message}\");";
+        }
+        private static string GenerateReactAggergateUrl(this IEnumerable<Property> properties)
+        {
+            var result = "`/${COLLECTION}`";
+
+            foreach (var property in properties)
+            {
+                result = $"aggregate{property.Name} ? `/${{AGGREGATE_COLLECTION_{property.RelatedEntityName.Pluralize().ToUpper()}}}/${{aggregate{property.Name}}}` : {result}";
+            }
+
+            return result;
         }
     }
 }
@@ -2200,7 +2867,6 @@ public static class StringExtensions
 
         return replacement;
     }
-
     private static bool KeepChar(this char c)
     {
         switch (char.GetUnicodeCategory(c))

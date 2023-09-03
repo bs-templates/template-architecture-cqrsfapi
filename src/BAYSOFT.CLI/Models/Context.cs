@@ -25,6 +25,7 @@ namespace BAYSOFT.CLI.Models
             }
         }
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Schema { get; set; }
         [JsonIgnore]
         public Project Project { get; set; }
@@ -93,6 +94,8 @@ namespace BAYSOFT.CLI.Models
         {
             Name = AnsiConsole.Ask<string>("Enter context name?");
 
+            DisplayName = AnsiConsole.Ask<string>("Enter context display name?");
+
             Schema = AnsiConsole.Ask<string>("Enter context schema?");
         }
 
@@ -107,6 +110,7 @@ namespace BAYSOFT.CLI.Models
             this.GenerateContextResourceClass();
             this.GenerateContextInitialMigration();
             this.GenerateSnapshot();
+            this.GenerateReactOrganismsIndexFile();
             foreach (var entity in Entities)
             {
                 entity.Generate();

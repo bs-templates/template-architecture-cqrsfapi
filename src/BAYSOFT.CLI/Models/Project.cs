@@ -39,6 +39,7 @@ namespace BAYSOFT.CLI.Models
             }
         }
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public ICollection<Context> Contexts { get; set; }
         public Project()
         {
@@ -108,6 +109,7 @@ namespace BAYSOFT.CLI.Models
         private void PromptEdit()
         {
             Name = AnsiConsole.Ask<string>("Enter project name?");
+            DisplayName = AnsiConsole.Ask<string>("Enter project display name?");
         }
 
         public override void Generate()

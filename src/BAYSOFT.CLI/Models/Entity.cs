@@ -39,7 +39,20 @@ namespace BAYSOFT.CLI.Models
                     .ToList();
             }
         }
+        [JsonIgnore]
+        public int Nivel
+        {
+            get
+            {
+                int nivel = 0;
+
+                nivel = Properties.Where(p => p.IsForeignKey).Select(p => p.Entity.Context.Entities.Where(e => e.Name == p.RelatedEntityName).First().Nivel).Max();
+
+                return nivel + 1;
+            }
+        }
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public bool GetById { get; set; }
         public bool GetByFilter { get; set; }
         [JsonIgnore]
@@ -380,6 +393,8 @@ namespace BAYSOFT.CLI.Models
         private void PromptEdit()
         {
             Name = AnsiConsole.Ask<string>("Enter entity name?");
+
+            DisplayName = AnsiConsole.Ask<string>("Enter entity display name?");
         }
 
         public override void Generate()
@@ -390,6 +405,16 @@ namespace BAYSOFT.CLI.Models
             this.GenerateEntityResourceXML();
             this.GenerateEntityResourceClass();
             this.GenerateControllerFile();
+            this.GenerateReactFormFile();
+            this.GenerateReactTableFile();
+            this.GenerateReactPageIndexFile();
+            this.GenerateReactPageCreateFile();
+            this.GenerateReactPageEditFile();
+            this.GenerateReactPagesIndexFile();
+            if (Context.Entities.Any(e=>e.Properties.Any(p=>p.IsForeignKey && p.RelatedEntityName == Name)))
+            {
+                this.GenerateReactTabsFile();
+            }
             foreach (var specification in Specifications)
             {
                 specification.Generate();
